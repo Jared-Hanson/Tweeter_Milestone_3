@@ -11,6 +11,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.client.view.main.Tweet.FeedFragment;
+import edu.byu.cs.tweeter.client.view.main.Tweet.StoryFragment;
+import edu.byu.cs.tweeter.client.view.main.following.FollowerFragment;
 import edu.byu.cs.tweeter.client.view.main.following.FollowingFragment;
 
 /**
@@ -20,6 +23,10 @@ import edu.byu.cs.tweeter.client.view.main.following.FollowingFragment;
 class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     private static final int FOLLOWING_FRAGMENT_POSITION = 2;
+    private static final int FOLLOWER_FRAGMENT_POSITION = 3;
+    private static final int STORY_FRAGMENT_POSITION = 1;
+    private static final int FEED_FRAGMENT_POSITION = 0;
+
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.feedTabTitle, R.string.storyTabTitle, R.string.followingTabTitle, R.string.followersTabTitle};
@@ -38,7 +45,17 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position == FOLLOWING_FRAGMENT_POSITION) {
             return FollowingFragment.newInstance(user, authToken);
-        } else {
+        }
+        else if(position == FOLLOWER_FRAGMENT_POSITION){
+            return FollowerFragment.newInstance(user, authToken);
+        }
+        else if(position == STORY_FRAGMENT_POSITION){
+            return StoryFragment.newInstance(user, authToken);
+        }
+        else if(position == FEED_FRAGMENT_POSITION){
+            return FeedFragment.newInstance(user, authToken);
+        }
+        else {
             return PlaceholderFragment.newInstance(position + 1);
         }
     }

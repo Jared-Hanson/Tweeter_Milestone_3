@@ -6,7 +6,7 @@ import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 
-public interface LoginService {
+public interface LoginService_DEMO {
 
     LoginResponse login(LoginRequest request) throws IOException, TweeterRemoteException;
 }

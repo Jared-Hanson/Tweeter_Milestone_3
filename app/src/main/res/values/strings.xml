@@ -7,6 +7,7 @@
     <string name="userImageContentDescription">The user\'s image</string>
 
     <string name="title_activity_main">Tweeter</string>
+    <string name="user_activity_main">Tweeter</string>
     <string name="loadingData">Loading More Data…</string>
     <string name="feedTabTitle">Feed</string>
     <string name="storyTabTitle">Story</string>
@@ -15,7 +16,18 @@
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
+    <string name="sampleDate">March 12 - 2021</string>
+    <string name="sampleTweetBody">This is my first tweet</string>
     <string name="title_activity_login">Sign in</string>
     <string name="followeeCount">Following: %d</string>
     <string name="followerCount">Followers: %d</string>
+    <string name="password">password</string>
+    <string name="username">@username</string>
+    <string name="follow">Unfollow</string>
+    <string name="tweeter">tweeter</string>
+    <string name="login">Login</string>
+    <string name="lastName">last name</string>
+    <string name="firstName">first name</string>
+    <string name="register">register</string>
+    <string name="picturePrompt">Take a Profile Picture</string>
 </resources>

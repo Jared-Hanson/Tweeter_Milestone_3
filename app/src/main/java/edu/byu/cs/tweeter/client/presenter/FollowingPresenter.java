@@ -2,11 +2,9 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.FollowingServiceProxy;
-import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.client.model.service.FollowingService;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
-import edu.byu.cs.tweeter.model.service.FollowingService;
 
 /**
  * The presenter for the "following" functionality of the application.
@@ -19,7 +17,7 @@ public class FollowingPresenter {
      * The interface by which this presenter communicates with it's view.
      */
     public interface View {
-        // If needed, specify methods here that will be called on the view in response to edu.byu.cs.shared.edu.byu.cs.tweeter.client.model updates
+        // If needed, specify methods here that will be called on the view in response to model updates
     }
 
     /**
@@ -39,7 +37,7 @@ public class FollowingPresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followees.
      */
-    public FollowingResponse getFollowing(FollowingRequest request) throws IOException, TweeterRemoteException {
+    public FollowingResponse getFollowing(FollowingRequest request) throws IOException {
         FollowingService followingService = getFollowingService();
         return followingService.getFollowees(request);
     }
@@ -51,7 +49,7 @@ public class FollowingPresenter {
      *
      * @return the instance.
      */
-    FollowingService getFollowingService() {
-        return new FollowingServiceProxy();
+    public FollowingService getFollowingService() {
+        return new FollowingService();
     }
 }

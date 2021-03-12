@@ -2,24 +2,38 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.LoginServiceProxy;
-import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.client.model.service.LoginService;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
-import edu.byu.cs.tweeter.model.service.LoginService;
+import edu.byu.cs.tweeter.client.presenter.Observers.LoginObserver;
+import edu.byu.cs.tweeter.client.view.main.Login.LoginFragment;
+import edu.byu.cs.tweeter.client.view.main.Login.LoginSubject;
 
 /**
  * The presenter for the login functionality of the application.
  */
-public class LoginPresenter {
+public class LoginPresenter implements LoginObserver {
 
     private final View view;
+
+    @Override
+    public void Update(LoginSubject subject, String username, String password) {
+        if(subject instanceof LoginFragment) {
+            LoginFragment loginFragment = (LoginFragment) subject;
+            if(username.length() > 0 && password.length() >= 6) {
+                loginFragment.setButton(true);
+            }
+            else {
+                loginFragment.setButton(false);
+            }
+        }
+    }
 
     /**
      * The interface by which this presenter communicates with it's view.
      */
     public interface View {
-        // If needed, specify methods here that will be called on the view in response to edu.byu.cs.shared.edu.byu.cs.tweeter.client.model updates
+        // If needed, specify methods here that will be called on the view in response to model updates
     }
 
     /**
@@ -36,8 +50,10 @@ public class LoginPresenter {
      *
      * @param loginRequest the request.
      */
-    public LoginResponse login(LoginRequest loginRequest) throws IOException, TweeterRemoteException {
-        LoginService loginService = new LoginServiceProxy();
+    public LoginResponse login(LoginRequest loginRequest) throws IOException {
+        LoginService loginService = getLoginService();
         return loginService.login(loginRequest);
     }
+
+    public LoginService getLoginService() {return new LoginService();};
 }

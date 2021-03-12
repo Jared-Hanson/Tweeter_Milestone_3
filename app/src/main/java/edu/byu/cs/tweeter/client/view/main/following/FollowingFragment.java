@@ -1,12 +1,6 @@
 package edu.byu.cs.tweeter.client.view.main.following;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.List;
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.client.presenter.FollowingPresenter;
@@ -293,19 +291,6 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         @Override
         public void handleException(Exception exception) {
             Log.e(LOG_TAG, exception.getMessage(), exception);
-
-            if(exception instanceof TweeterRemoteException) {
-                TweeterRemoteException remoteException = (TweeterRemoteException) exception;
-                Log.e(LOG_TAG, "Remote Exception Type: " + remoteException.getRemoteExceptionType());
-
-                Log.e(LOG_TAG, "Remote Stack Trace:");
-                if(remoteException.getRemoteStackTrace() != null) {
-                    for(String stackTraceLine : remoteException.getRemoteStackTrace()) {
-                        Log.e(LOG_TAG, "\t\t" + stackTraceLine);
-                    }
-                }
-            }
-
             removeLoadingFooter();
             Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -354,7 +339,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
          * @param dy the amount of vertical scroll.
          */
         @Override
-        public void onScrolled(@NotNull RecyclerView recyclerView, int dx, int dy) {
+        public void onScrolled( RecyclerView recyclerView, int dx, int dy) {
             super.onScrolled(recyclerView, dx, dy);
 
             int visibleItemCount = layoutManager.getChildCount();

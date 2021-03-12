@@ -8,19 +8,45 @@ import java.util.Objects;
  */
 public class User implements Comparable<User>, Serializable {
 
-    private String firstName;
-    private String lastName;
-    private String alias;
-    private String imageUrl;
+    private final String firstName;
+    private final String lastName;
+    private final String alias;
+    private final String imageUrl;
     private byte [] imageBytes;
+    private int followers;
+    private int following;
 
-    /**
-     * Allows construction of the object from Json. Private so it won't be called by other code.
-     */
-    private User() {}
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
+    public int getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(int following) {
+        this.following = following;
+    }
+
+    public User(String firstName, String lastName, String alias, String imageUrl, int followers, int following) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.alias = alias;
+        this.imageUrl = imageUrl;
+        this.followers = followers;
+        this.following = following;
+    }
 
     public User(String firstName, String lastName, String imageURL) {
         this(firstName, lastName, String.format("@%s%s", firstName, lastName), imageURL);
+        imageBytes = null;
+
+        followers = 0;
+        following = 0;
     }
 
     public User(String firstName, String lastName, String alias, String imageURL) {
@@ -28,22 +54,18 @@ public class User implements Comparable<User>, Serializable {
         this.lastName = lastName;
         this.alias = alias;
         this.imageUrl = imageURL;
+        imageBytes = null;
+
+        followers = 0;
+        following = 0;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
     public String getLastName() {
         return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getName() {
@@ -54,16 +76,8 @@ public class User implements Comparable<User>, Serializable {
         return alias;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public byte [] getImageBytes() {
