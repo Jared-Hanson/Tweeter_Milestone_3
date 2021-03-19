@@ -9,7 +9,7 @@ import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 /**
  * Defines the interface for the 'following' service.
  */
-public interface FollowingService_DEMO{
+public interface FollowingService_I {
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in

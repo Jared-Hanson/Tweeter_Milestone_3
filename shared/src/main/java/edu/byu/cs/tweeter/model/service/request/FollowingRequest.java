@@ -6,9 +6,9 @@ package edu.byu.cs.tweeter.model.service.request;
  */
 public class FollowingRequest {
 
-    private final String followerAlias;
-    private final int limit;
-    private final String lastFolloweeAlias;
+    private String followerAlias;
+    private  int limit;
+    private  String lastFolloweeAlias;
 
     /**
      * Creates an instance.
@@ -22,6 +22,22 @@ public class FollowingRequest {
     public FollowingRequest(String followerAlias, int limit, String lastFolloweeAlias) {
         this.followerAlias = followerAlias;
         this.limit = limit;
+        this.lastFolloweeAlias = lastFolloweeAlias;
+    }
+    public FollowingRequest() {
+        this.followerAlias = null;
+        this.limit = -1;
+        this.lastFolloweeAlias = null;
+    }
+    public void setFollowerAlias(String followerAlias){
+        this.followerAlias = followerAlias;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setLastFolloweeAlias(String lastFolloweeAlias) {
         this.lastFolloweeAlias = lastFolloweeAlias;
     }
 
