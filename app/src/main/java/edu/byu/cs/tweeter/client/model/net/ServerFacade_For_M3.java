@@ -8,11 +8,13 @@ import edu.byu.cs.tweeter.model.service.request.FollowDataRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowActionResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowDataResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -92,6 +94,13 @@ public class ServerFacade_For_M3 {
     }
     public FollowActionResponse isFollowing(FollowActionRequest request, String urlPath) throws IOException, TweeterRemoteException {
         FollowActionResponse response = clientCommunicator.doPost(urlPath, request, null, FollowActionResponse.class);
+        return response;
+
+    }
+
+    public TweetResponse postTweet(TweetRequest request, String urlPath) throws IOException, TweeterRemoteException{
+        // need to fix this so that it acctually uses the current user
+        TweetResponse response = clientCommunicator.doPost(urlPath, request, null, TweetResponse.class);
         return response;
 
     }

@@ -1,5 +1,9 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.TweetService;
@@ -33,6 +37,7 @@ public class TweetPresenter {
      *
      * @param request the request.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public TweetResponse postTweet(TweetRequest request) throws IOException {
         TweetService tweetService = getTweetService();
         return tweetService.postTweet(request);

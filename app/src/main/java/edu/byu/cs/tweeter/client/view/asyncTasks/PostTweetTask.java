@@ -1,6 +1,9 @@
 package edu.byu.cs.tweeter.client.view.asyncTasks;
 
 import android.os.AsyncTask;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 
@@ -28,6 +31,7 @@ public class PostTweetTask extends AsyncTask<TweetRequest, Void, TweetResponse> 
         this.observer = observer;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected TweetResponse doInBackground(TweetRequest... tweetRequests) {
 
