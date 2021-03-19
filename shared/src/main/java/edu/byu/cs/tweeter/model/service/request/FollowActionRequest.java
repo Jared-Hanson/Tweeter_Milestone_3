@@ -13,6 +13,17 @@ public class FollowActionRequest {
         this.userToFollow = userToFollow;
     }
 
+    public FollowActionRequest() {
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setUserToFollow(User userToFollow) {
+        this.userToFollow = userToFollow;
+    }
+
     public User getUser() {
         return user;
     }

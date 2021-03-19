@@ -7,13 +7,13 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.FollowDataService;
+import edu.byu.cs.tweeter.client.model.service.FollowDataServiceProxy;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.model.service.request.FollowDataRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowDataResponse;
 
-public class FollowDataServiceTest {
+public class FollowDataServiceProxyTest {
 
     private FollowDataRequest validRequest;
     private FollowDataRequest invalidRequest;
@@ -21,7 +21,7 @@ public class FollowDataServiceTest {
     private FollowDataResponse successResponse;
     private FollowDataResponse failureResponse;
 
-    private FollowDataService followingServiceSpy;
+    private FollowDataServiceProxy followingServiceSpy;
 
     /**
      * Create a FollowingService spy that uses a mock ServerFacade to return known responses to
@@ -45,7 +45,7 @@ public class FollowDataServiceTest {
         Mockito.when(mockServerFacade.getFollowerData(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        followingServiceSpy = Mockito.spy(new FollowDataService());
+        followingServiceSpy = Mockito.spy(new FollowDataServiceProxy());
         Mockito.when(followingServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 

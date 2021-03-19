@@ -2,9 +2,9 @@ package edu.byu.cs.tweeter.model.service.request;
 
 public class FollowerRequest {
 
-    private final String followerAlias;
-    private final int limit;
-    private final String lastFolloweeAlias;
+    private  String followerAlias;
+    private  int limit;
+    private  String lastFolloweeAlias;
 
     /**
      * Creates an instance.
@@ -21,6 +21,10 @@ public class FollowerRequest {
         this.lastFolloweeAlias = lastFolloweeAlias;
     }
 
+    public FollowerRequest() {
+
+    }
+
     /**
      * Returns the follower whose followees are to be returned by this request.
      *
@@ -28,6 +32,18 @@ public class FollowerRequest {
      */
     public String getFollowerAlias() {
         return followerAlias;
+    }
+
+    public void setFollowerAlias(String followerAlias) {
+        this.followerAlias = followerAlias;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setLastFolloweeAlias(String lastFolloweeAlias) {
+        this.lastFolloweeAlias = lastFolloweeAlias;
     }
 
     /**

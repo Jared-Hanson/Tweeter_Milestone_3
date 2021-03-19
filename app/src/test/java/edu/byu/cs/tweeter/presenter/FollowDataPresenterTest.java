@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.presenter.FollowerDataPresenter;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.client.model.service.FollowDataService;
+import edu.byu.cs.tweeter.client.model.service.FollowDataServiceProxy;
 import edu.byu.cs.tweeter.model.service.request.FollowDataRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowDataResponse;
 
@@ -17,7 +17,7 @@ public class FollowDataPresenterTest {
 
     private FollowDataRequest request;
     private FollowDataResponse response;
-    private FollowDataService mockFollowDataService;
+    private FollowDataServiceProxy mockFollowDataServiceProxy;
     private FollowerDataPresenter presenter;
 
     @BeforeEach
@@ -27,16 +27,16 @@ public class FollowDataPresenterTest {
         request = new FollowDataRequest(currentUser);
         response = new FollowDataResponse(1, 1);
 
-        mockFollowDataService = Mockito.mock(FollowDataService.class);
-        Mockito.when(mockFollowDataService.getFollowerData(request)).thenReturn(response);
+        mockFollowDataServiceProxy = Mockito.mock(FollowDataServiceProxy.class);
+        Mockito.when(mockFollowDataServiceProxy.getFollowerData(request)).thenReturn(response);
 
         presenter = Mockito.spy(new FollowerDataPresenter(new FollowerDataPresenter.View() {}));
-        Mockito.when(presenter.getFollowerService()).thenReturn(mockFollowDataService);
+        Mockito.when(presenter.getFollowerService()).thenReturn(mockFollowDataServiceProxy);
     }
 
     @Test
     public void testGetFollowingData_returnsServiceResult() throws IOException {
-        Mockito.when(mockFollowDataService.getFollowerData(request)).thenReturn(response);
+        Mockito.when(mockFollowDataServiceProxy.getFollowerData(request)).thenReturn(response);
 
         // Assert that the presenter returns the same response as the service (it doesn't do
         // anything else, so there's nothing else to test).
@@ -45,7 +45,7 @@ public class FollowDataPresenterTest {
 
     @Test
     public void testGetFollowingData_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
-        Mockito.when(mockFollowDataService.getFollowerData(request)).thenThrow(new IOException());
+        Mockito.when(mockFollowDataServiceProxy.getFollowerData(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {
             presenter.getFollowingData(request);

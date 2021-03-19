@@ -8,10 +8,10 @@ import java.util.Objects;
  */
 public class User implements Comparable<User>, Serializable {
 
-    private final String firstName;
-    private final String lastName;
-    private final String alias;
-    private final String imageUrl;
+    private  String firstName;
+    private  String lastName;
+    private  String alias;
+    private  String imageUrl;
     private byte [] imageBytes;
     private int followers;
     private int following;
@@ -58,6 +58,25 @@ public class User implements Comparable<User>, Serializable {
 
         followers = 0;
         following = 0;
+    }
+
+    public User() {
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getFirstName() {

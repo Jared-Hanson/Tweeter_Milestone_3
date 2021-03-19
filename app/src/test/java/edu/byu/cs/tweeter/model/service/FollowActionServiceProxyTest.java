@@ -7,13 +7,13 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.FollowActionService;
+import edu.byu.cs.tweeter.client.model.service.FollowActionServiceProxy;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.model.service.request.FollowActionRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowActionResponse;
 
-public class FollowActionServiceTest {
+public class FollowActionServiceProxyTest {
 
     private FollowActionRequest validRequest;
     private FollowActionRequest invalidRequest;
@@ -21,7 +21,7 @@ public class FollowActionServiceTest {
     private FollowActionResponse successResponse;
     private FollowActionResponse failureResponse;
 
-    private FollowActionService followingServiceSpy;
+    private FollowActionServiceProxy followingServiceSpy;
 
     @BeforeEach
     public void setup() {
@@ -45,7 +45,7 @@ public class FollowActionServiceTest {
         Mockito.when(mockServerFacade.unFollowUser(invalidRequest)).thenReturn(failureResponse);
         Mockito.when(mockServerFacade.isFollowing(invalidRequest)).thenReturn(failureResponse);
 
-        followingServiceSpy = Mockito.spy(new FollowActionService());
+        followingServiceSpy = Mockito.spy(new FollowActionServiceProxy());
         Mockito.when(followingServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 

@@ -8,13 +8,13 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Arrays;
 
-import edu.byu.cs.tweeter.client.model.service.FollowerService;
+import edu.byu.cs.tweeter.client.model.service.FollowerServiceProxy;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 
-public class FollowerServiceTest {
+public class FollowerServiceProxyTest {
 
     private FollowerRequest validRequest;
     private FollowerRequest invalidRequest;
@@ -22,7 +22,7 @@ public class FollowerServiceTest {
     private FollowerResponse successResponse;
     private FollowerResponse failureResponse;
 
-    private FollowerService followerServiceSpy;
+    private FollowerServiceProxy followerServiceProxySpy;
 
     /**
      * Create a FollowerService spy that uses a mock ServerFacade to return known responses to
@@ -52,19 +52,19 @@ public class FollowerServiceTest {
         Mockito.when(mockServerFacade.getFollowers(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowerService instance and wrap it with a spy that will use the mock service
-        followerServiceSpy = Mockito.spy(new FollowerService());
-        Mockito.when(followerServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
+        followerServiceProxySpy = Mockito.spy(new FollowerServiceProxy());
+        Mockito.when(followerServiceProxySpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     @Test
     public void testGetFollowers_validRequest_correctResponse() throws IOException {
-        FollowerResponse response = followerServiceSpy.getFollowers(validRequest);
+        FollowerResponse response = followerServiceProxySpy.getFollowers(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
     @Test
     public void testGetFollowers_validRequest_loadsProfileImages() throws IOException {
-        FollowerResponse response = followerServiceSpy.getFollowers(validRequest);
+        FollowerResponse response = followerServiceProxySpy.getFollowers(validRequest);
 
         for(User user : response.getFollowers()) {
             Assertions.assertNotNull(user.getImageBytes());
@@ -73,7 +73,7 @@ public class FollowerServiceTest {
 
     @Test
     public void testGetFollowers_invalidRequest_returnsNoFollowers() throws IOException {
-        FollowerResponse response = followerServiceSpy.getFollowers(invalidRequest);
+        FollowerResponse response = followerServiceProxySpy.getFollowers(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }
 }

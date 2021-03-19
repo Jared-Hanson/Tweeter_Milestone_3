@@ -2,9 +2,12 @@ package edu.byu.cs.tweeter.client.model.service;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.FollowerService_I;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
@@ -12,7 +15,8 @@ import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
 /**
  * Contains the business logic for getting the users a user is following.
  */
-public class FollowerService {
+public class FollowerServiceProxy implements FollowerService_I {
+    static final String URL_PATH = "/getfollowers";
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in
@@ -23,8 +27,8 @@ public class FollowerService {
      * @param request contains the data required to fulfill the request.
      * @return the followees.
      */
-    public FollowerResponse getFollowers(FollowerRequest request) throws IOException {
-        FollowerResponse response = getServerFacade().getFollowers(request);
+    public FollowerResponse getFollowers(FollowerRequest request) throws IOException, TweeterRemoteException {
+        FollowerResponse response = getServerFacade().getFollowers(request, URL_PATH);
 
         if(response.isSuccess()) {
             loadImages(response);
@@ -52,7 +56,7 @@ public class FollowerService {
      *
      * @return the instance.
      */
-    public ServerFacade getServerFacade() {
-        return new ServerFacade();
+    public ServerFacade_For_M3 getServerFacade() {
+        return new ServerFacade_For_M3();
     }
 }

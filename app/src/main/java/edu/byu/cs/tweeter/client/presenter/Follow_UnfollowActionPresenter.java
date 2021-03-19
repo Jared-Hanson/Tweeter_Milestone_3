@@ -2,8 +2,9 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.FollowActionService;
+import edu.byu.cs.tweeter.client.model.service.FollowActionServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.FollowingService;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.FollowActionRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowActionResponse;
 
@@ -37,17 +38,17 @@ public class Follow_UnfollowActionPresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followees.
      */
-    public FollowActionResponse followUser(FollowActionRequest request) throws IOException {
-        FollowActionService followActionService = getFollowService();
-        return followActionService.followUser(request);
+    public FollowActionResponse followUser(FollowActionRequest request) throws IOException, TweeterRemoteException {
+        FollowActionServiceProxy followActionServiceProxy = getFollowService();
+        return followActionServiceProxy.followUser(request);
     }
-    public FollowActionResponse unFollowUser(FollowActionRequest request) throws IOException {
-        FollowActionService followActionService = getFollowService();
-        return followActionService.unFollowUser(request);
+    public FollowActionResponse unFollowUser(FollowActionRequest request) throws IOException, TweeterRemoteException {
+        FollowActionServiceProxy followActionServiceProxy = getFollowService();
+        return followActionServiceProxy.unFollowUser(request);
     }
-    public FollowActionResponse isFollowing(FollowActionRequest request) throws IOException {
-        FollowActionService followActionService = getFollowService();
-        return followActionService.isFollowing(request);
+    public FollowActionResponse isFollowing(FollowActionRequest request) throws IOException, TweeterRemoteException {
+        FollowActionServiceProxy followActionServiceProxy = getFollowService();
+        return followActionServiceProxy.isFollowing(request);
     }
 
     /**
@@ -57,8 +58,8 @@ public class Follow_UnfollowActionPresenter {
      *
      * @return the instance.
      */
-    public FollowActionService getFollowService() {
-        return new FollowActionService();
+    public FollowActionServiceProxy getFollowService() {
+        return new FollowActionServiceProxy();
     }
 
 }

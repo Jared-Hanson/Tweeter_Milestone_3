@@ -3,8 +3,14 @@ package edu.byu.cs.tweeter.client.model.net;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.request.FollowActionRequest;
+import edu.byu.cs.tweeter.model.service.request.FollowDataRequest;
+import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.response.FollowActionResponse;
+import edu.byu.cs.tweeter.model.service.response.FollowDataResponse;
+import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 
@@ -55,5 +61,38 @@ public class ServerFacade_For_M3 {
             System.out.println(response.getMessage());
             throw new RuntimeException(response.getMessage());
         }
+    }
+    public FollowDataResponse getFollowerData(FollowDataRequest request, String urlPath)
+            throws IOException, TweeterRemoteException {
+        FollowDataResponse response = clientCommunicator.doPost(urlPath, request, null, FollowDataResponse.class);
+        return response;
+    }
+
+    public FollowerResponse getFollowers(FollowerRequest request, String urlPath)
+            throws IOException, TweeterRemoteException {
+        FollowerResponse response = clientCommunicator.doPost(urlPath, request, null, FollowerResponse.class);
+
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            System.out.println(response.getMessage());
+            throw new RuntimeException(response.getMessage());
+        }
+    }
+
+    public FollowActionResponse followUser(FollowActionRequest request, String urlPath) throws IOException, TweeterRemoteException {
+        FollowActionResponse response = clientCommunicator.doPost(urlPath, request, null, FollowActionResponse.class);
+        return response;
+
+    }
+    public FollowActionResponse unFollowUser(FollowActionRequest request, String urlPath) throws IOException, TweeterRemoteException {
+        FollowActionResponse response = clientCommunicator.doPost(urlPath, request, null, FollowActionResponse.class);
+        return response;
+
+    }
+    public FollowActionResponse isFollowing(FollowActionRequest request, String urlPath) throws IOException, TweeterRemoteException {
+        FollowActionResponse response = clientCommunicator.doPost(urlPath, request, null, FollowActionResponse.class);
+        return response;
+
     }
 }
