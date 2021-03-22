@@ -1,19 +1,26 @@
 package edu.byu.cs.tweeter.client.model.net;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import edu.byu.cs.tweeter.BuildConfig;
+import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.FollowActionRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowDataRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowActionResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowDataResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 
 /**
@@ -103,5 +110,24 @@ public class ServerFacade_For_M3 {
         TweetResponse response = clientCommunicator.doPost(urlPath, request, null, TweetResponse.class);
         return response;
 
+    }
+    public StoryResponse getStory(StoryRequest request, String urlPath) throws IOException, TweeterRemoteException {
+        StoryResponse response = clientCommunicator.doPost(urlPath, request, null, StoryResponse.class);
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            System.out.println(response.getMessage());
+            throw new RuntimeException(response.getMessage());
+        }
+    }
+
+    public StoryResponse getFeed(StoryRequest request, String urlPath) throws IOException, TweeterRemoteException {
+        StoryResponse response = clientCommunicator.doPost(urlPath, request, null, StoryResponse.class);
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            System.out.println(response.getMessage());
+            throw new RuntimeException(response.getMessage());
+        }
     }
 }
