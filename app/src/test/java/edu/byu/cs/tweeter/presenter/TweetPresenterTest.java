@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 import edu.byu.cs.tweeter.client.presenter.TweetPresenter;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.client.model.service.TweetService;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 

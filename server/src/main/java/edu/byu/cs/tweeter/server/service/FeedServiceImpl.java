@@ -3,22 +3,22 @@ package edu.byu.cs.tweeter.server.service;
 import edu.byu.cs.tweeter.model.service.FeedService_I;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
-import edu.byu.cs.tweeter.server.dao.FeedDAO;
+import edu.byu.cs.tweeter.server.dao.TweetDAO;
 
 public class FeedServiceImpl implements FeedService_I {
     @Override
     public StoryResponse getFeed(StoryRequest request) {
-        return getFeedDAO().getFeed(request);
+        return getTweetDAO().getFeed(request);
     }
 
     /**
-     * Returns an instance of {@link FeedDAO}. Allows mocking of the FeedDAO class
-     * for testing purposes. All usages of FeedDAO should get their FeedDAO
+     * Returns an instance of {@link TweetDAO}. Allows mocking of the TweetDAO class
+     * for testing purposes. All usages of TweetDAO should get their TweetDAO
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    FeedDAO getFeedDAO() {
-        return new FeedDAO();
+    TweetDAO getTweetDAO() {
+        return new TweetDAO();
     }
 }

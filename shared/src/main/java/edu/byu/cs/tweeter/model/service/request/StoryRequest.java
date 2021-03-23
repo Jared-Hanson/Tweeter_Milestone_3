@@ -13,6 +13,12 @@ public class StoryRequest {
         this.lastTweet = lastTweet;
     }
 
+    public StoryRequest() {
+        userAlias = null;
+        limit = 0;
+        lastTweet = null;
+    }
+
     public String getUserAlias() {
         return userAlias;
     }

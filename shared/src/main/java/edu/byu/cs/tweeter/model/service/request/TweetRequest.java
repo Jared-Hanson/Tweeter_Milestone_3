@@ -17,6 +17,12 @@ public class TweetRequest {
         this.date = date;
     }
 
+    public TweetRequest(){
+        tweetBody = null;
+        user = null;
+        date = null;
+    }
+
     public User getUser() {
         return user;
     }
@@ -28,6 +34,8 @@ public class TweetRequest {
     public LocalDate getDate() {
         return date;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
