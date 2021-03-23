@@ -3,24 +3,28 @@ package edu.byu.cs.tweeter.model.service.request;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class TweetRequest {
     private final User user;
     private final String tweetBody;
     private final LocalDate date;
+    private final AuthToken authToken;
 
 
-    public TweetRequest(User user, String tweetBody, LocalDate date) {
+    public TweetRequest(User user, String tweetBody, LocalDate date, AuthToken authToken) {
         this.user = user;
         this.tweetBody = tweetBody;
         this.date = date;
+        this.authToken = authToken;
     }
 
     public TweetRequest(){
         tweetBody = null;
         user = null;
         date = null;
+        authToken = null;
     }
 
     public User getUser() {
@@ -35,7 +39,9 @@ public class TweetRequest {
         return date;
     }
 
-
+    public AuthToken getAuthToken() {
+        return authToken;
+    }
 
     @Override
     public boolean equals(Object o) {
