@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 import edu.byu.cs.tweeter.client.presenter.TweetPresenter;
@@ -39,7 +40,7 @@ public class PostTweetTask extends AsyncTask<TweetRequest, Void, TweetResponse> 
 
         try {
             response = presenter.postTweet(tweetRequests[0]);
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 

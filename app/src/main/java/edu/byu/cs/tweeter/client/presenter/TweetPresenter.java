@@ -7,6 +7,9 @@ import androidx.annotation.RequiresApi;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.TweetService;
+import edu.byu.cs.tweeter.client.model.service.TweetServiceProxy;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.TweetService_I;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 
@@ -38,8 +41,8 @@ public class TweetPresenter {
      * @param request the request.
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public TweetResponse postTweet(TweetRequest request) throws IOException {
-        TweetService tweetService = getTweetService();
+    public TweetResponse postTweet(TweetRequest request) throws IOException, TweeterRemoteException {
+        TweetService_I tweetService = getTweetService();
         return tweetService.postTweet(request);
     }
 

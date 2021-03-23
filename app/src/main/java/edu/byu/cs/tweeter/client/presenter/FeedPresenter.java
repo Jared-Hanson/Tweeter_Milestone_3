@@ -3,6 +3,9 @@ package edu.byu.cs.tweeter.client.presenter;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.FeedService;
+import edu.byu.cs.tweeter.client.model.service.FeedServiceProxy;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.FeedService_I;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 
@@ -21,8 +24,8 @@ public class FeedPresenter {
         //feed.addObserver(this);
     }
 
-    public StoryResponse getFeed(StoryRequest request) throws IOException {
-        FeedService feedService = getFeedService();
+    public StoryResponse getFeed(StoryRequest request) throws IOException, TweeterRemoteException {
+        FeedService_I feedService = getFeedService();
         return feedService.getFeed(request);
     }
 
