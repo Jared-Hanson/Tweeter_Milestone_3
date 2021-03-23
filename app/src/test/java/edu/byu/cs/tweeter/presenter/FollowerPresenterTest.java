@@ -11,6 +11,7 @@ import java.util.Arrays;
 import edu.byu.cs.tweeter.client.presenter.FollowerPresenter;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.service.FollowerServiceProxy;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 
@@ -22,7 +23,7 @@ public class FollowerPresenterTest {
     private FollowerPresenter presenter;
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
 
         User resultUser1 = new User("FirstName1", "LastName1",
@@ -45,7 +46,7 @@ public class FollowerPresenterTest {
     }
 
     @Test
-    public void testGetFollowers_returnsServiceResult() throws IOException {
+    public void testGetFollowers_returnsServiceResult() throws IOException, TweeterRemoteException {
         Mockito.when(mockFollowerServiceProxy.getFollowers(request)).thenReturn(response);
 
         // Assert that the presenter returns the same response as the service (it doesn't do
@@ -54,7 +55,7 @@ public class FollowerPresenterTest {
     }
 
     @Test
-    public void testGetFollowers_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
+    public void testGetFollowers_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
         Mockito.when(mockFollowerServiceProxy.getFollowers(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {

@@ -8,9 +8,11 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Arrays;
 
+import edu.byu.cs.tweeter.client.model.service.FollowingServiceProxy;
 import edu.byu.cs.tweeter.client.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.service.FollowingService;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 
@@ -18,11 +20,11 @@ public class FollowingPresenterTest {
 
     private FollowingRequest request;
     private FollowingResponse response;
-    private FollowingService mockFollowingService;
+    private FollowingServiceProxy mockFollowingService;
     private FollowingPresenter presenter;
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
 
         User resultUser1 = new User("FirstName1", "LastName1",
@@ -36,7 +38,7 @@ public class FollowingPresenterTest {
         response = new FollowingResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
 
         // Create a mock FollowingService
-        mockFollowingService = Mockito.mock(FollowingService.class);
+        mockFollowingService = Mockito.mock(FollowingServiceProxy.class);
         Mockito.when(mockFollowingService.getFollowees(request)).thenReturn(response);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
@@ -45,7 +47,7 @@ public class FollowingPresenterTest {
     }
 
     @Test
-    public void testGetFollowing_returnsServiceResult() throws IOException {
+    public void testGetFollowing_returnsServiceResult() throws IOException, TweeterRemoteException {
         Mockito.when(mockFollowingService.getFollowees(request)).thenReturn(response);
 
         // Assert that the presenter returns the same response as the service (it doesn't do
@@ -54,7 +56,7 @@ public class FollowingPresenterTest {
     }
 
     @Test
-    public void testGetFollowing_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
+    public void testGetFollowing_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
         Mockito.when(mockFollowingService.getFollowees(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {
