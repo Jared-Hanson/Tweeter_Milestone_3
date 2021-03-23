@@ -80,6 +80,7 @@ public class TweetDAO {
     }
 
     public StoryResponse getFeed(StoryRequest request) {
+
         assert request.getLimit() > 0;
         assert request.getUserAlias() != null;
 
@@ -102,6 +103,7 @@ public class TweetDAO {
 
         return new StoryResponse(true, responseTweets, hasMorePages);
     }
+
     private int getTweetStartingIndex(Tweet lastTweet, List<Tweet> allTweets) {
 
         int tweetIndex = 0;
