@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import edu.byu.cs.tweeter.client.model.service.StoryServiceProxy;
 import edu.byu.cs.tweeter.client.presenter.StoryPresenter;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.domain.Tweet;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 
@@ -19,11 +21,11 @@ public class StoryPresenterTest {
 
     private StoryResponse response;
     private StoryRequest request;
-    private StoryService mockStoryService;
+    private StoryServiceProxy mockStoryService;
     private StoryPresenter presenter;
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
 
         LocalDate date1 = LocalDate.of(2021, 1, 8);
@@ -44,7 +46,7 @@ public class StoryPresenterTest {
         request = new StoryRequest(currentUser.getAlias(), 3, null);
         response = new StoryResponse(Arrays.asList(resultTweet1, resultTweet2, resultTweet3), false);
 
-        mockStoryService = Mockito.mock(StoryService.class);
+        mockStoryService = Mockito.mock(StoryServiceProxy.class);
         Mockito.when(mockStoryService.getStory(request)).thenReturn(response);
 
         presenter = Mockito.spy(new StoryPresenter(new StoryPresenter.View() {}));
@@ -52,7 +54,7 @@ public class StoryPresenterTest {
     }
 
     @Test
-    public void testGetStory_returnsServiceResult() throws IOException {
+    public void testGetStory_returnsServiceResult() throws IOException, TweeterRemoteException {
         Mockito.when(mockStoryService.getStory(request)).thenReturn(response);
 
         // Assert that the presenter returns the same response as the service (it doesn't do
@@ -61,7 +63,7 @@ public class StoryPresenterTest {
     }
 
     @Test
-    public void testGetStory_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
+    public void testGetStory_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
         Mockito.when(mockStoryService.getStory(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {

@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.TweetService;
+
 import edu.byu.cs.tweeter.client.model.service.TweetServiceProxy;
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.TweetService_I;

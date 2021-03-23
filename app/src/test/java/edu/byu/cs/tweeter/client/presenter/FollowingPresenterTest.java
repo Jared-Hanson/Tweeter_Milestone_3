@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Arrays;
 
+import edu.byu.cs.tweeter.client.model.service.FollowingServiceProxy;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.client.model.service.FollowingService;
@@ -18,7 +19,7 @@ public class FollowingPresenterTest {
 
     private FollowingRequest request;
     private FollowingResponse response;
-    private FollowingService mockFollowingService;
+    private FollowingServiceProxy mockFollowingService;
     private FollowingPresenter presenter;
 
     @BeforeEach
@@ -36,7 +37,7 @@ public class FollowingPresenterTest {
         response = new FollowingResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
 
         // Create a mock FollowingService
-        mockFollowingService = Mockito.mock(FollowingService.class);
+        mockFollowingService = Mockito.mock(FollowingServiceProxy.class);
         Mockito.when(mockFollowingService.getFollowees(request)).thenReturn(response);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
