@@ -20,7 +20,7 @@ public class FollowActionServiceImpl implements FollowActionService_I {
     public FollowActionResponse isFollowing(FollowActionRequest request)  {
         return getDAO().isFollowing(request);
     }
-    private FollowingDAO getDAO(){
+    public FollowingDAO getDAO(){
         return new FollowingDAO();
     }
 }
