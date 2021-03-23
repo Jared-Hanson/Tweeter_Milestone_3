@@ -1,11 +1,9 @@
 package edu.byu.cs.tweeter.server.service;
 
-import java.io.IOException;
-
 import edu.byu.cs.tweeter.model.service.FollowActionService_I;
 import edu.byu.cs.tweeter.model.service.request.FollowActionRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowActionResponse;
-import edu.byu.cs.tweeter.server.dao.FollowActionDAO;
+import edu.byu.cs.tweeter.server.dao.FollowingDAO;
 
 public class FollowActionServiceImpl implements FollowActionService_I {
     @Override
@@ -22,7 +20,7 @@ public class FollowActionServiceImpl implements FollowActionService_I {
     public FollowActionResponse isFollowing(FollowActionRequest request)  {
         return getDAO().isFollowing(request);
     }
-    private FollowActionDAO getDAO(){
-        return new FollowActionDAO();
+    private FollowingDAO getDAO(){
+        return new FollowingDAO();
     }
 }

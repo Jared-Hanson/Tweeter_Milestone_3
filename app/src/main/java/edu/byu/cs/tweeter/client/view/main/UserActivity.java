@@ -106,11 +106,11 @@ public class UserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(isFollowing){
                     // call async task/observer to do the follow/unfollow action
-                    new unFollowUser().executeTask(new FollowActionRequest(loggedInUser, user));
+                    new unFollowUser().executeTask(new FollowActionRequest(loggedInUser, user, authToken));
                 }
                 else{
 
-                    new followUser().executeTask(new FollowActionRequest(loggedInUser, user));
+                    new followUser().executeTask(new FollowActionRequest(loggedInUser, user, authToken));
                 }
             }
         });

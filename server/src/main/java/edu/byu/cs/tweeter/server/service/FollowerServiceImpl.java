@@ -1,12 +1,8 @@
 package edu.byu.cs.tweeter.server.service;
 
 import edu.byu.cs.tweeter.model.service.FollowerService_I;
-import edu.byu.cs.tweeter.model.service.FollowingService_I;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
-import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
-import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
-import edu.byu.cs.tweeter.server.dao.FollowerDAO;
 import edu.byu.cs.tweeter.server.dao.FollowingDAO;
 
 public class FollowerServiceImpl implements FollowerService_I {
@@ -31,8 +27,8 @@ public class FollowerServiceImpl implements FollowerService_I {
      *
      * @return the instance.
      */
-    FollowerDAO getFollowerDAO() {
-        return new FollowerDAO();
+    FollowingDAO getFollowerDAO() {
+        return new FollowingDAO();
     }
 
 }
