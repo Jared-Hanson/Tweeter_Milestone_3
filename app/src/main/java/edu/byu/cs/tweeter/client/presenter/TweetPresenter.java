@@ -43,5 +43,5 @@ public class TweetPresenter {
         return tweetService.postTweet(request);
     }
 
-    public TweetService getTweetService() {return new TweetService();}
+    public TweetServiceProxy getTweetService() {return new TweetServiceProxy();}
 }

@@ -26,5 +26,5 @@ public class FeedPresenter {
         return feedService.getFeed(request);
     }
 
-    public FeedService getFeedService() {return new FeedService();}
+    public FeedServiceProxy getFeedService() {return new FeedServiceProxy();}
 }

@@ -21,5 +21,5 @@ public class StoryPresenter {
         return storyService.getStory(request);
     }
 
-    public StoryService getStoryService() {return new StoryService();}
+    public StoryServiceProxy getStoryService() {return new StoryServiceProxy();}
 }
