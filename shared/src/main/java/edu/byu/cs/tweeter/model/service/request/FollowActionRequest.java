@@ -32,6 +32,14 @@ public class FollowActionRequest {
     public FollowActionRequest() {
     }
 
+    @Override
+    public String toString() {
+        return "FollowActionRequest{" +
+                "user=" + user +
+                ", userToFollow=" + userToFollow +
+                '}';
+    }
+
     public void setUser(User user) {
         this.user = user;
     }
