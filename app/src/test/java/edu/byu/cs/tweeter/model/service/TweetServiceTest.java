@@ -37,7 +37,7 @@ public class TweetServiceTest {
         LocalDate time = LocalDate.of(2021, 1, 8);
 
         // Setup request objects to use in the tests
-        validRequest = new TweetRequest(currentUser, "tweet", time, new AuthToken());
+        validRequest = new TweetRequest(currentUser, "tweet", time.toString(), new AuthToken());
         invalidRequest = new TweetRequest(null, null, null, null);
 
         // Setup a mock ServerFacade that will return known responses
