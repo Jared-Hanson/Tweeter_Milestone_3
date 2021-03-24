@@ -15,7 +15,7 @@ import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.GetUserDataRequest;
 import edu.byu.cs.tweeter.model.service.response.GetUserDataResponse;
 
-public class GetUserDataServiceTest {
+public class GetUserDataServiceProxyTest {
 
     private GetUserDataRequest validRequest;
     private GetUserDataRequest invalidRequest;

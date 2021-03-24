@@ -92,15 +92,15 @@ public class UserDAO {
             return new LoginResponse("Username already taken");
         }
         User user = new User(request.getFirstName(), request.getLastName(), request.getUsername(),
-                null);
-        user.setImageBytes(request.getImageBytes());
+                MALE_IMAGE_URL);
+        //user.setImageBytes(request.getImageBytes());
         return new LoginResponse(user, new AuthToken());
     }
 
     public LogoutResponse logout(LogoutRequest logoutRequest) {
         LogoutResponse logoutResponse = null;
         if(logoutRequest.getUser() != null && logoutRequest.getAuthToken() != null) {
-            logoutResponse = new LogoutResponse(true, logoutRequest.getUser() + " succesfully logged out");
+            logoutResponse = new LogoutResponse(true, logoutRequest.getUser().getAlias() + " succesfully logged out");
         }
 
         return logoutResponse;

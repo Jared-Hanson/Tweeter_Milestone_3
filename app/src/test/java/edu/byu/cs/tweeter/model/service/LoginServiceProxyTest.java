@@ -16,7 +16,7 @@ import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 
-public class LoginServiceTest {
+public class LoginServiceProxyTest {
 
     private LoginRequest validRequest;
     private LoginRequest invalidRequest;
@@ -30,7 +30,7 @@ public class LoginServiceTest {
 
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
-        User currentUser = new User("FirstName", "LastName", null);
+        User currentUser = new User("FirstName", "LastName", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
         AuthToken token = new AuthToken();
         String goodLogin = "@FirstNameLastName";
         String badLogin = "Gregory";

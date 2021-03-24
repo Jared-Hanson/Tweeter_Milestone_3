@@ -16,7 +16,7 @@ import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 
-public class RegisterServiceTest {
+public class RegisterServiceProxyTest {
 
     private RegisterRequest validRequest;
     private RegisterRequest invalidRequest;
