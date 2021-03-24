@@ -3,12 +3,14 @@ package edu.byu.cs.tweeter.client.model.service;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
+import edu.byu.cs.tweeter.model.service.LogoutService_I;
 import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 
-public class LogoutService {
+public class LogoutService implements LogoutService_I {
     public LogoutResponse logout(LogoutRequest request) throws IOException {
-        ServerFacade serverFacade = getServerFacade();
+        ServerFacade_For_M3 serverFacade = getServerFacade();
         LogoutResponse logoutResponse = serverFacade.logout(request);
 
         return logoutResponse;
@@ -22,7 +24,7 @@ public class LogoutService {
      *
      * @return the instance.
      */
-    public ServerFacade getServerFacade() {
-        return new ServerFacade();
+    public ServerFacade_For_M3 getServerFacade() {
+        return new ServerFacade_For_M3();
     }
 }
