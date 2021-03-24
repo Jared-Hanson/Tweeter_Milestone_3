@@ -11,6 +11,7 @@ import java.time.LocalDate;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
 import edu.byu.cs.tweeter.client.model.service.TweetServiceProxy;
+import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
@@ -36,8 +37,8 @@ public class TweetServiceTest {
         LocalDate time = LocalDate.of(2021, 1, 8);
 
         // Setup request objects to use in the tests
-        validRequest = new TweetRequest(currentUser, "tweet", time);
-        invalidRequest = new TweetRequest(null, null, null);
+        validRequest = new TweetRequest(currentUser, "tweet", time, new AuthToken());
+        invalidRequest = new TweetRequest(null, null, null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new TweetResponse(true);

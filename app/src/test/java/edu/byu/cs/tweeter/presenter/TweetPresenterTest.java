@@ -10,6 +10,7 @@ import java.time.LocalDate;
 
 import edu.byu.cs.tweeter.client.model.service.TweetServiceProxy;
 import edu.byu.cs.tweeter.client.presenter.TweetPresenter;
+import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
@@ -28,7 +29,7 @@ public class TweetPresenterTest {
 
         LocalDate time = LocalDate.of(2021, 1, 8);
 
-        request = new TweetRequest(currentUser, "tweet", time);
+        request = new TweetRequest(currentUser, "tweet", time, new AuthToken());
         response = new TweetResponse(true);
 
         mockTweetService = Mockito.mock(TweetServiceProxy.class);
