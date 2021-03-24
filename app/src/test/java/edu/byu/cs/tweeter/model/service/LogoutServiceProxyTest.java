@@ -16,7 +16,7 @@ import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 
-public class LogoutServiceTest {
+public class LogoutServiceProxyTest {
 
     private LogoutRequest validRequest;
     private LogoutRequest invalidRequest;

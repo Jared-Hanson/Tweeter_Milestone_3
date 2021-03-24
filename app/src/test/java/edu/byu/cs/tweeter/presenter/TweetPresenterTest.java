@@ -29,7 +29,7 @@ public class TweetPresenterTest {
 
         LocalDate time = LocalDate.of(2021, 1, 8);
 
-        request = new TweetRequest(currentUser, "tweet", time, new AuthToken());
+        request = new TweetRequest(currentUser, "tweet", time.toString(), new AuthToken());
         response = new TweetResponse(true);
 
         mockTweetService = Mockito.mock(TweetServiceProxy.class);
