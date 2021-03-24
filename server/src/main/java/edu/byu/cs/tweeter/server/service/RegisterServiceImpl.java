@@ -1,4 +1,31 @@
 package edu.byu.cs.tweeter.server.service;
 
-public class RegisterServiceImpl {
+import java.io.IOException;
+
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.RegisterService_I;
+import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
+import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
+import edu.byu.cs.tweeter.server.dao.UserDAO;
+
+public class RegisterServiceImpl implements RegisterService_I {
+    @Override
+    public LoginResponse register(RegisterRequest request) throws IOException, TweeterRemoteException {
+        UserDAO userDAO = getUserDAO();
+        LoginResponse response = userDAO.register(request);
+        if(response.getAuthToken() != null) {
+            AuthTokenDAO authTokenDAO = getAuthTokenDAO();
+            authTokenDAO.addToken(response.getAuthToken());
+        }
+        return response;
+    }
+
+    public UserDAO getUserDAO() {
+        return new UserDAO();
+    }
+
+    public AuthTokenDAO getAuthTokenDAO() {
+        return new AuthTokenDAO();
+    }
 }

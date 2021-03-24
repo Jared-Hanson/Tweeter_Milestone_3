@@ -21,6 +21,16 @@ public class LogoutRequest {
         this.authToken = authToken;
     }
 
+    public LogoutRequest() {}
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setAuthToken(AuthToken authToken) {
+        this.authToken = authToken;
+    }
+
     /**
      * Returns the user of the user to be logged out by this request.
      *

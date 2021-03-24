@@ -2,7 +2,9 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.LoginService;
+import edu.byu.cs.tweeter.client.model.service.LoginServiceProxy;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.LoginService_I;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.client.presenter.Observers.LoginObserver;
@@ -50,10 +52,10 @@ public class LoginPresenter implements LoginObserver {
      *
      * @param loginRequest the request.
      */
-    public LoginResponse login(LoginRequest loginRequest) throws IOException {
-        LoginService loginService = getLoginService();
+    public LoginResponse login(LoginRequest loginRequest) throws IOException, TweeterRemoteException {
+        LoginService_I loginService = getLoginService();
         return loginService.login(loginRequest);
     }
 
-    public LoginService getLoginService() {return new LoginService();};
+    public LoginService_I getLoginService() {return new LoginServiceProxy();};
 }

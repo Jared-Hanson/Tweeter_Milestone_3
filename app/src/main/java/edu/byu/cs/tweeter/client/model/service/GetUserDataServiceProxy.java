@@ -6,19 +6,23 @@ import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.GetUserDataService_I;
 import edu.byu.cs.tweeter.model.service.request.GetUserDataRequest;
 import edu.byu.cs.tweeter.model.service.response.GetUserDataResponse;
 import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
 
-public class GetUserDataService {
+public class GetUserDataServiceProxy implements GetUserDataService_I {
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public GetUserDataResponse getUserData(GetUserDataRequest getUserDataRequest) throws IOException {
-        ServerFacade serverFacade = getServerFacade();
+    private static final String URL_PATH = "/getuser";
 
-        GetUserDataResponse getUserDataResponse = serverFacade.getUserFromAlias(getUserDataRequest.getAlias());
+    public GetUserDataResponse getUserData(GetUserDataRequest getUserDataRequest) throws IOException, TweeterRemoteException {
+        ServerFacade_For_M3 serverFacade = getServerFacade();
+
+        GetUserDataResponse getUserDataResponse = serverFacade.getUserFromAlias(getUserDataRequest, URL_PATH);
 
         if(getUserDataResponse.isSuccess() && getUserDataResponse.getUser().getImageBytes() == null) {
             loadImage(getUserDataResponse.getUser());
@@ -40,8 +44,7 @@ public class GetUserDataService {
      * @return the instance.
      *
      */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public ServerFacade getServerFacade() {
-        return new ServerFacade();
+    public ServerFacade_For_M3 getServerFacade() {
+        return new ServerFacade_For_M3();
     }
 }

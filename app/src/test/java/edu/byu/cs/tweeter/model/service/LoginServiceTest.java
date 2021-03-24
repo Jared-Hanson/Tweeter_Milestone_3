@@ -7,10 +7,12 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.LoginService;
+import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
+import edu.byu.cs.tweeter.client.model.service.LoginServiceProxy;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 
@@ -22,10 +24,12 @@ public class LoginServiceTest {
     private LoginResponse successResponse;
     private LoginResponse failureResponse;
 
-    private LoginService loginServiceSpy;
+    private LoginServiceProxy loginServiceSpy;
+
+    private static final String URL_PATH = "/login";
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
         AuthToken token = new AuthToken();
         String goodLogin = "@FirstNameLastName";
@@ -39,24 +43,24 @@ public class LoginServiceTest {
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new LoginResponse(currentUser, token);
-        ServerFacade mockServerFacade = Mockito.mock(ServerFacade.class);
-        Mockito.when(mockServerFacade.login(validRequest)).thenReturn(successResponse);
+        ServerFacade_For_M3 mockServerFacade = Mockito.mock(ServerFacade_For_M3.class);
+        Mockito.when(mockServerFacade.login(validRequest, URL_PATH)).thenReturn(successResponse);
 
         failureResponse = new LoginResponse("An exception occurred");
-        Mockito.when(mockServerFacade.login(invalidRequest)).thenReturn(failureResponse);
+        Mockito.when(mockServerFacade.login(invalidRequest, URL_PATH)).thenReturn(failureResponse);
 
-        loginServiceSpy = Mockito.spy(new LoginService());
+        loginServiceSpy = Mockito.spy(new LoginServiceProxy());
         Mockito.when(loginServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     @Test
-    public void testLogin_validRequest_correctResponse() throws IOException {
+    public void testLogin_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         LoginResponse response = loginServiceSpy.login(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
     @Test
-    public void testLogin_invalidRequest_returnsFailure() throws IOException {
+    public void testLogin_invalidRequest_returnsFailure() throws IOException, TweeterRemoteException {
         LoginResponse response = loginServiceSpy.login(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

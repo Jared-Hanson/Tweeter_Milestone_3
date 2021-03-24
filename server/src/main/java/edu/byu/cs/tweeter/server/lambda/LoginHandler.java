@@ -3,8 +3,12 @@ package edu.byu.cs.tweeter.server.lambda;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
+import java.io.IOException;
+
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 import edu.byu.cs.tweeter.server.service.LoginServiceImpl;
 
 /**
@@ -15,6 +19,10 @@ public class LoginHandler implements RequestHandler<LoginRequest, LoginResponse>
     @Override
     public LoginResponse handleRequest(LoginRequest loginRequest, Context context) {
         LoginServiceImpl loginService = new LoginServiceImpl();
-        return loginService.login(loginRequest);
+        try {
+            return loginService.login(loginRequest);
+        } catch (IOException | TweeterRemoteException e) {
+            return new LoginResponse("Error logging in");
+        }
     }
 }

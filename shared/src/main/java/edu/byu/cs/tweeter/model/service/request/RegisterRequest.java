@@ -5,10 +5,10 @@ package edu.byu.cs.tweeter.model.service.request;
  */
 public class RegisterRequest {
 
-    private final String firstName;
-    private final String lastName;
-    private final String username;
-    private final String password;
+    private String firstName;
+    private String lastName;
+    private String username;
+    private String password;
     private byte [] imageBytes;
 
     /**
@@ -25,6 +25,28 @@ public class RegisterRequest {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+        this.imageBytes = imageBytes;
+    }
+
+    public RegisterRequest() { }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setImageBytes(byte[] imageBytes) {
         this.imageBytes = imageBytes;
     }
 

@@ -4,14 +4,17 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.model.service.LogoutService_I;
 import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 
-public class LogoutService implements LogoutService_I {
-    public LogoutResponse logout(LogoutRequest request) throws IOException {
+public class LogoutServiceProxy implements LogoutService_I {
+    private static final String URL_PATH = "/logout";
+
+    public LogoutResponse logout(LogoutRequest request) throws IOException, TweeterRemoteException {
         ServerFacade_For_M3 serverFacade = getServerFacade();
-        LogoutResponse logoutResponse = serverFacade.logout(request);
+        LogoutResponse logoutResponse = serverFacade.logout(request, URL_PATH);
 
         return logoutResponse;
     }

@@ -9,14 +9,16 @@ import androidx.annotation.RequiresApi;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.client.model.service.GetUserDataService;
+import edu.byu.cs.tweeter.client.model.service.GetUserDataServiceProxy;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.GetUserDataService_I;
 import edu.byu.cs.tweeter.model.service.request.GetUserDataRequest;
 import edu.byu.cs.tweeter.model.service.response.GetUserDataResponse;
 import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
 
 public class GetUserDataTask extends AsyncTask<GetUserDataRequest, Void, GetUserDataResponse> {
     private final Observer observer;
-    private GetUserDataService service;
+    private GetUserDataService_I service;
 
     /**
      * An observer interface to be implemented by observers who want to be notified when this task
@@ -32,7 +34,7 @@ public class GetUserDataTask extends AsyncTask<GetUserDataRequest, Void, GetUser
      *
      * @param observer the observer who wants to be notified when this task completes.
      */
-    public GetUserDataTask(GetUserDataService service, Observer observer) {
+    public GetUserDataTask(GetUserDataService_I service, Observer observer) {
         this.service = service;
         if(observer == null) {
             throw new NullPointerException();
@@ -51,7 +53,7 @@ public class GetUserDataTask extends AsyncTask<GetUserDataRequest, Void, GetUser
             if(getUserDataResponse.isSuccess()) {
                 loadImage(getUserDataResponse.getUser());
             }
-        } catch (IOException e) {
+        } catch (IOException | TweeterRemoteException e) {
             e.printStackTrace();
         }
 

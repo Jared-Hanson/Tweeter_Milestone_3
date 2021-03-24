@@ -2,7 +2,9 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.LogoutService;
+import edu.byu.cs.tweeter.client.model.service.LogoutServiceProxy;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.LogoutService_I;
 import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 
@@ -32,10 +34,10 @@ public class LogoutPresenter {
      *
      * @param logoutRequest the request.
      */
-    public LogoutResponse logout(LogoutRequest logoutRequest) throws IOException {
-        LogoutService logoutService = getLogoutService();
+    public LogoutResponse logout(LogoutRequest logoutRequest) throws IOException, TweeterRemoteException {
+        LogoutService_I logoutService = getLogoutService();
         return logoutService.logout(logoutRequest);
     }
 
-    public LogoutService getLogoutService() {return new LogoutService();}
+    public LogoutService_I getLogoutService() {return new LogoutServiceProxy();}
 }

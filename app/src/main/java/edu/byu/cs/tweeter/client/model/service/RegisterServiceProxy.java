@@ -2,8 +2,11 @@ package edu.byu.cs.tweeter.client.model.service;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.model.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.model.service.RegisterService_I;
 import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
@@ -11,13 +14,15 @@ import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
 /**
  * Contains the business logic to support the register operation.
  */
-public class RegisterService {
+public class RegisterServiceProxy implements RegisterService_I {
 
-    public LoginResponse register(RegisterRequest request) throws IOException {
+    private static final String URL_PATH = "/register";
+
+    public LoginResponse register(RegisterRequest request) throws IOException, TweeterRemoteException {
 
 
-        ServerFacade serverFacade = getServerFacade();
-        LoginResponse registerResponse = serverFacade.register(request);
+        ServerFacade_For_M3 serverFacade = getServerFacade();
+        LoginResponse registerResponse = serverFacade.register(request, URL_PATH);
 
         if(registerResponse.isSuccess() && registerResponse.getUser().getImageBytes() == null) {
             loadImage(registerResponse.getUser());
@@ -43,7 +48,7 @@ public class RegisterService {
      *
      * @return the instance.
      */
-    public ServerFacade getServerFacade() {
-        return new ServerFacade();
+    public ServerFacade_For_M3 getServerFacade() {
+        return new ServerFacade_For_M3();
     }
 }

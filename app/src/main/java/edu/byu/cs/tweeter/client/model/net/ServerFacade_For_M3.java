@@ -12,14 +12,19 @@ import edu.byu.cs.tweeter.model.service.request.FollowActionRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowDataRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.service.request.GetUserDataRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
+import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowActionResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowDataResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.model.service.response.GetUserDataResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 
@@ -123,6 +128,36 @@ public class ServerFacade_For_M3 {
 
     public StoryResponse getFeed(StoryRequest request, String urlPath) throws IOException, TweeterRemoteException {
         StoryResponse response = clientCommunicator.doPost(urlPath, request, null, StoryResponse.class);
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            System.out.println(response.getMessage());
+            throw new RuntimeException(response.getMessage());
+        }
+    }
+
+    public GetUserDataResponse getUserFromAlias(GetUserDataRequest request, String urlPath) throws IOException, TweeterRemoteException {
+        GetUserDataResponse response = clientCommunicator.doPost(urlPath, request, null, GetUserDataResponse.class);
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            System.out.println(response.getMessage());
+            throw new RuntimeException(response.getMessage());
+        }
+    }
+
+    public LogoutResponse logout(LogoutRequest request, String urlPath) throws IOException, TweeterRemoteException {
+        LogoutResponse response = clientCommunicator.doPost(urlPath, request, null, LogoutResponse.class);
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            System.out.println(response.getMessage());
+            throw new RuntimeException(response.getMessage());
+        }
+    }
+
+    public LoginResponse register(RegisterRequest request, String urlPath) throws IOException, TweeterRemoteException {
+        LoginResponse response = clientCommunicator.doPost(urlPath, request, null, LoginResponse.class);
         if(response.isSuccess()) {
             return response;
         } else {

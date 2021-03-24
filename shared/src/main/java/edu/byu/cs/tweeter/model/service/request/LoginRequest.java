@@ -5,8 +5,8 @@ package edu.byu.cs.tweeter.model.service.request;
  */
 public class LoginRequest {
 
-    private final String username;
-    private final String password;
+    private String username;
+    private String password;
 
     /**
      * Creates an instance.
@@ -16,6 +16,17 @@ public class LoginRequest {
      */
     public LoginRequest(String username, String password) {
         this.username = username;
+        this.password = password;
+    }
+
+    public LoginRequest() {
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 

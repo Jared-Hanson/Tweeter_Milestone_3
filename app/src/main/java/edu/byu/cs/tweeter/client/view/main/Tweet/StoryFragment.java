@@ -31,7 +31,7 @@ import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.client.model.service.GetUserDataService;
+import edu.byu.cs.tweeter.client.model.service.GetUserDataServiceProxy;
 import edu.byu.cs.tweeter.model.service.request.GetUserDataRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.GetUserDataResponse;
@@ -213,7 +213,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View, GetU
                         @Override
                         public void onClick(View widget) {
                             GetUserDataRequest getUserDataRequest = new GetUserDataRequest(mentionAlias);
-                            GetUserDataService getUserDataService = new GetUserDataService();
+                            GetUserDataServiceProxy getUserDataService = new GetUserDataServiceProxy();
                             GetUserDataTask getUserDataTask = new GetUserDataTask(getUserDataService, StoryFragment.this);
                             getUserDataTask.execute(getUserDataRequest);
 

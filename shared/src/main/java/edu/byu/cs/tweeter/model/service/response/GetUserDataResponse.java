@@ -20,7 +20,12 @@ public class GetUserDataResponse extends Response {
         this.user = user;
     }
 
+    public GetUserDataResponse(String message) {
+        super(false, message);
+    }
+
     public User getUser() {
         return user;
     }
+
 }
