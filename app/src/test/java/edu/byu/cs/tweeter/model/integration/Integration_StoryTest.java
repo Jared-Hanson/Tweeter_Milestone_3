@@ -138,6 +138,6 @@ public class Integration_StoryTest {
     }
 
     private List<Tweet> getDummyStory() {
-        return Arrays.asList(fTweet1, fTweet2, fTweet3);
+        return Arrays.asList(uTweet1, uTweet2, uTweet3);
     }
 }
