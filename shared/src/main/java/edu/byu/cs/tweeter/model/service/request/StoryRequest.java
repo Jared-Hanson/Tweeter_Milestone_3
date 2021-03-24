@@ -3,9 +3,9 @@ package edu.byu.cs.tweeter.model.service.request;
 import edu.byu.cs.tweeter.model.domain.Tweet;
 
 public class StoryRequest {
-    private final String userAlias;
-    private final int limit;
-    private final Tweet lastTweet;
+    private String userAlias;
+    private int limit;
+    private Tweet lastTweet;
 
     public StoryRequest(String userAlias, int limit, Tweet lastTweet) {
         this.userAlias = userAlias;
@@ -13,11 +13,7 @@ public class StoryRequest {
         this.lastTweet = lastTweet;
     }
 
-    public StoryRequest() {
-        userAlias = null;
-        limit = 0;
-        lastTweet = null;
-    }
+    public StoryRequest() {}
 
     public String getUserAlias() {
         return userAlias;
@@ -29,5 +25,17 @@ public class StoryRequest {
 
     public Tweet getLastTweet() {
         return lastTweet;
+    }
+
+    public void setUserAlias(String userAlias) {
+        this.userAlias = userAlias;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setLastTweet(Tweet lastTweet) {
+        this.lastTweet = lastTweet;
     }
 }

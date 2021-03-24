@@ -7,10 +7,10 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class TweetRequest {
-    private final User user;
-    private final String tweetBody;
-    private final LocalDate date;
-    private final AuthToken authToken;
+    private User user;
+    private String tweetBody;
+    private LocalDate date;
+    private AuthToken authToken;
 
 
     public TweetRequest(User user, String tweetBody, LocalDate date, AuthToken authToken) {
@@ -21,10 +21,6 @@ public class TweetRequest {
     }
 
     public TweetRequest(){
-        tweetBody = null;
-        user = null;
-        date = null;
-        authToken = null;
     }
 
     public User getUser() {
@@ -41,6 +37,22 @@ public class TweetRequest {
 
     public AuthToken getAuthToken() {
         return authToken;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setTweetBody(String tweetBody) {
+        this.tweetBody = tweetBody;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setAuthToken(AuthToken authToken) {
+        this.authToken = authToken;
     }
 
     @Override
