@@ -39,9 +39,9 @@ public class StoryPresenterTest {
         User resultUser3 = new User("FirstName3", "LastName3",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
-        Tweet resultTweet1 = new Tweet(resultUser1, "what a tweet eh", date1);
-        Tweet resultTweet2 = new Tweet(resultUser2, "Second Tweet", date2);
-        Tweet resultTweet3 = new Tweet(resultUser3, "What a tweet tweet", date3);
+        Tweet resultTweet1 = new Tweet(resultUser1, "what a tweet eh", date1.toString());
+        Tweet resultTweet2 = new Tweet(resultUser2, "Second Tweet", date2.toString());
+        Tweet resultTweet3 = new Tweet(resultUser3, "What a tweet tweet", date3.toString());
 
         request = new StoryRequest(currentUser.getAlias(), 3, null);
         response = new StoryResponse(Arrays.asList(resultTweet1, resultTweet2, resultTweet3), false);

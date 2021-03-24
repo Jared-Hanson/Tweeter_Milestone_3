@@ -95,15 +95,15 @@ public class ServerFacade {
     private final LocalDate date10 = LocalDate.of(2021, 1, 8);
     private final LocalDate date11 = LocalDate.of(2021, 7, 3);
 
-    private final Tweet uTweet1 = new Tweet(testUser, "what a tweet eh", date1);
-    private final Tweet uTweet2 = new Tweet(testUser, "Second Tweet" + user9.getAlias(), date2);
-    private final Tweet uTweet3 = new Tweet(testUser, "What https://nba.com a tweet https://byu.edu", date3);
+    private final Tweet uTweet1 = new Tweet(testUser, "what a tweet eh", date1.toString());
+    private final Tweet uTweet2 = new Tweet(testUser, "Second Tweet" + user9.getAlias(), date2.toString());
+    private final Tweet uTweet3 = new Tweet(testUser, "What https://nba.com a tweet https://byu.edu", date3.toString());
 
-    private final Tweet fTweet1 = new Tweet(user3, "I hate dummy data", date4);
-    private final Tweet fTweet2 = new Tweet(user5, "Who did that?", date5);
-    private final Tweet fTweet3 = new Tweet(user9, "Visit my page at " + user9.getAlias(), date6);
-    private final Tweet fTweet4 = new Tweet(user1, "Go to https://www.byu.edu/", date7);
-    private final Tweet fTweet5 = new Tweet(user8, "Visit my page at (Not Someone you follow)" + user8.getAlias(), date8);
+    private final Tweet fTweet1 = new Tweet(user3, "I hate dummy data", date4.toString());
+    private final Tweet fTweet2 = new Tweet(user5, "Who did that?", date5.toString());
+    private final Tweet fTweet3 = new Tweet(user9, "Visit my page at " + user9.getAlias(), date6.toString());
+    private final Tweet fTweet4 = new Tweet(user1, "Go to https://www.byu.edu/", date7.toString());
+    private final Tweet fTweet5 = new Tweet(user8, "Visit my page at (Not Someone you follow)" + user8.getAlias(), date8.toString());
 
     private final List<Tweet> loginFeed = new ArrayList<Tweet>(Arrays.asList(fTweet2, fTweet3, fTweet4,
             fTweet5, fTweet1));

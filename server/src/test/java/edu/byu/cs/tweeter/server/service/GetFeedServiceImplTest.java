@@ -32,9 +32,9 @@ public class GetFeedServiceImplTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
         User resultUser3 = new User("FirstName3", "LastName3",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
-        Tweet tweet1 = new Tweet(resultUser1, "This is a tweet", date1);
-        Tweet tweet2 = new Tweet(resultUser2, "This is another tweet", date2);
-        Tweet tweet3 = new Tweet(resultUser3, "This is yet another tweet", date3);
+        Tweet tweet1 = new Tweet(resultUser1, "This is a tweet", date1.toString());
+        Tweet tweet2 = new Tweet(resultUser2, "This is another tweet", date2.toString());
+        Tweet tweet3 = new Tweet(resultUser3, "This is yet another tweet", date3.toString());
 
         request = new StoryRequest(currentUser.getAlias(), 3, null);
 

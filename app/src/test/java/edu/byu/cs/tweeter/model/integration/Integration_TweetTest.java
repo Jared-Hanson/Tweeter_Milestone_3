@@ -26,7 +26,7 @@ public class Integration_TweetTest {
     public void setup() {
         User currentUser = new User("FirstName", "LastName", null);
         LocalDate date1 = LocalDate.of(2021, 1, 8);
-        Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1);
+        Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1.toString());
 
         request = new TweetRequest(currentUser, tweet1.getBody(), date1.toString(), new AuthToken());
 

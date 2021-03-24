@@ -6,15 +6,14 @@ package edu.byu.cs.tweeter.model.domain;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 public class Tweet implements Comparable<Tweet>{
     private final User author;
     private final String body;
-    private final LocalDate date;
+    private final String date;
 
-    public Tweet(@NotNull User author, @NotNull String body, @NotNull LocalDate date) {
+    public Tweet(@NotNull User author, @NotNull String body, @NotNull String date) {
         this.author = author;
         this.body = body;
         this.date = date;
@@ -28,7 +27,7 @@ public class Tweet implements Comparable<Tweet>{
         return body;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 

@@ -27,9 +27,9 @@ public class GetStoryServiceImplTest {
         LocalDate date2 = LocalDate.of(2021, 2, 24);
         LocalDate date3 = LocalDate.of(2021, 3, 28);
 
-        Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1);
-        Tweet tweet2 = new Tweet(currentUser, "This is another tweet", date2);
-        Tweet tweet3 = new Tweet(currentUser, "This is yet another tweet", date3);
+        Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1.toString());
+        Tweet tweet2 = new Tweet(currentUser, "This is another tweet", date2.toString());
+        Tweet tweet3 = new Tweet(currentUser, "This is yet another tweet", date3.toString());
 
         request = new StoryRequest(currentUser.getAlias(), 3, null);
 

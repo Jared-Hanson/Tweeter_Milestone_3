@@ -66,11 +66,11 @@ public class Integration_FeedTest {
     private final LocalDate date7 = LocalDate.of(2021, 2, 21);
     private final LocalDate date8 = LocalDate.of(2019, 5, 8);;
 
-    private final Tweet fTweet1 = new Tweet(user3, "I hate dummy data", date4);
-    private final Tweet fTweet2 = new Tweet(user5, "Who did that?", date5);
-    private final Tweet fTweet3 = new Tweet(user9, "Visit my page at " + user9.getAlias(), date6);
-    private final Tweet fTweet4 = new Tweet(user1, "Go to https://www.byu.edu/", date7);
-    private final Tweet fTweet5 = new Tweet(user8, "Visit my page at (Not Someone you follow)" + user8.getAlias(), date8);
+    private final Tweet fTweet1 = new Tweet(user3, "I hate dummy data", date4.toString());
+    private final Tweet fTweet2 = new Tweet(user5, "Who did that?", date5.toString());
+    private final Tweet fTweet3 = new Tweet(user9, "Visit my page at " + user9.getAlias(), date6.toString());
+    private final Tweet fTweet4 = new Tweet(user1, "Go to https://www.byu.edu/", date7.toString());
+    private final Tweet fTweet5 = new Tweet(user8, "Visit my page at (Not Someone you follow)" + user8.getAlias(), date8.toString());
 
     private final List<Tweet> loginFeed = new ArrayList<Tweet>(Arrays.asList(fTweet2, fTweet3, fTweet4,
             fTweet5, fTweet1));
