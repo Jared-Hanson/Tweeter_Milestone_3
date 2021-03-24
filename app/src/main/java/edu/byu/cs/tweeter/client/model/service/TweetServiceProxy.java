@@ -13,7 +13,7 @@ import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 
 public class TweetServiceProxy implements TweetService_I {
-    static final String URL_PATH = "/tweet";
+    static final String URL_PATH = "/posttweet";
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public TweetResponse postTweet(TweetRequest request) throws IOException, TweeterRemoteException {

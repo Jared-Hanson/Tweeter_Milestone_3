@@ -28,7 +28,7 @@ public class TweetServiceTest {
 
     private TweetServiceProxy tweetServiceSpy;
 
-    private final String URL_PATH = "/tweet";
+    private final String URL_PATH = "/posttweet";
 
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {

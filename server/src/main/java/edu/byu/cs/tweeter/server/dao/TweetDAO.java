@@ -75,7 +75,8 @@ public class TweetDAO {
     private final List<Tweet> registerFeed = Collections.emptyList();
 
     public TweetResponse postTweet(TweetRequest request) {
-        TweetResponse response = new TweetResponse(true, request.getTweetBody());
+        TweetResponse response = new TweetResponse(true);
+        System.out.println("tweet success");
         return response;
     }
 

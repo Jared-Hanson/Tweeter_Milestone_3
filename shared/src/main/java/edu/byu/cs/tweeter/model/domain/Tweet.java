@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
-
 public class Tweet implements Comparable<Tweet>{
     private final User author;
     private final String body;

@@ -1,6 +1,5 @@
 package edu.byu.cs.tweeter.model.service.request;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
 import edu.byu.cs.tweeter.model.domain.AuthToken;
@@ -9,11 +8,11 @@ import edu.byu.cs.tweeter.model.domain.User;
 public class TweetRequest {
     private User user;
     private String tweetBody;
-    private LocalDate date;
+    private String date;
     private AuthToken authToken;
 
 
-    public TweetRequest(User user, String tweetBody, LocalDate date, AuthToken authToken) {
+    public TweetRequest(User user, String tweetBody, String date, AuthToken authToken) {
         this.user = user;
         this.tweetBody = tweetBody;
         this.date = date;
@@ -31,7 +30,7 @@ public class TweetRequest {
         return tweetBody;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -47,7 +46,7 @@ public class TweetRequest {
         this.tweetBody = tweetBody;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
