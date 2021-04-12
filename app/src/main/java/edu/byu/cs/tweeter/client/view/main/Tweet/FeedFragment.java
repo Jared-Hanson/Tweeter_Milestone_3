@@ -395,7 +395,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View, GetUse
         @RequiresApi(api = Build.VERSION_CODES.O)
         private void addLoadingFooter() {
             LocalDate date = LocalDate.now();
-            addItem(new Tweet(new User("Dummy", "User", ""), "User", date.toString()));
+            addItem(new Tweet(new User("Dummy", "User", ""), "User", date.toEpochDay()));
         }
 
         /**

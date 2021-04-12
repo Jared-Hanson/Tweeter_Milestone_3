@@ -112,6 +112,9 @@ public class UserDAO {
                 return new GetUserDataResponse(user);
             }
         }
+        if(testUser.getAlias().equals(getUserDataRequest.getAlias())) {
+            return new GetUserDataResponse(testUser);
+        }
         return new GetUserDataResponse(false, null);
     }
 }

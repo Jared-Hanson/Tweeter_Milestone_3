@@ -11,9 +11,9 @@ import java.util.Objects;
 public class Tweet implements Comparable<Tweet>{
     private final User author;
     private final String body;
-    private final String date;
+    private final Long date;
 
-    public Tweet(@NotNull User author, @NotNull String body, @NotNull String date) {
+    public Tweet(@NotNull User author, @NotNull String body, @NotNull Long date) {
         this.author = author;
         this.body = body;
         this.date = date;
@@ -27,7 +27,7 @@ public class Tweet implements Comparable<Tweet>{
         return body;
     }
 
-    public String getDate() {
+    public Long getDate() {
         return date;
     }
 

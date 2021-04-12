@@ -26,6 +26,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
@@ -46,6 +47,7 @@ import edu.byu.cs.tweeter.client.view.main.Login.LoginActivity;
 import edu.byu.cs.tweeter.client.view.util.ImageUtils;
 
 import static edu.byu.cs.tweeter.R.layout.activity_main;
+import static java.time.ZoneOffset.UTC;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements LogoutTask.Observ
 
                 String inText = input.getText().toString();
                 User user = (User) getIntent().getSerializableExtra(CURRENT_USER_KEY);
-                String date = LocalDate.now().toString();
+                Long date = LocalDateTime.now().toEpochSecond(UTC);
                 TweetRequest request = new TweetRequest(user, inText, date, authToken);
                 new postTweetDialogBOX().postTweet(request);
 

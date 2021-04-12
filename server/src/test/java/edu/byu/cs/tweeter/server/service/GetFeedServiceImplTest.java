@@ -12,12 +12,12 @@ import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
-import edu.byu.cs.tweeter.server.dao.TweetDAO;
+import edu.byu.cs.tweeter.server.dao.StoryDAO;
 
 public class GetFeedServiceImplTest {
     private StoryResponse expectedResponse;
     private StoryRequest request;
-    private TweetDAO mockTweetDAO;
+    private StoryDAO mMockStoryDAO;
     private FeedServiceImpl feedServiceSpy;
 
     @BeforeEach
@@ -32,18 +32,18 @@ public class GetFeedServiceImplTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
         User resultUser3 = new User("FirstName3", "LastName3",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
-        Tweet tweet1 = new Tweet(resultUser1, "This is a tweet", date1.toString());
-        Tweet tweet2 = new Tweet(resultUser2, "This is another tweet", date2.toString());
-        Tweet tweet3 = new Tweet(resultUser3, "This is yet another tweet", date3.toString());
+        Tweet tweet1 = new Tweet(resultUser1, "This is a tweet", date1.toEpochDay());
+        Tweet tweet2 = new Tweet(resultUser2, "This is another tweet", date2.toEpochDay());
+        Tweet tweet3 = new Tweet(resultUser3, "This is yet another tweet", date3.toEpochDay());
 
         request = new StoryRequest(currentUser.getAlias(), 3, null);
 
         expectedResponse = new StoryResponse(Arrays.asList(tweet1, tweet2, tweet3), false);
-        mockTweetDAO = Mockito.mock(TweetDAO.class);
-        Mockito.when(mockTweetDAO.getFeed(request)).thenReturn(expectedResponse);
+        mMockStoryDAO = Mockito.mock(StoryDAO.class);
+        Mockito.when(mMockStoryDAO.getFeed(request)).thenReturn(expectedResponse);
 
         feedServiceSpy = Mockito.spy(FeedServiceImpl.class);
-        Mockito.when(feedServiceSpy.getTweetDAO()).thenReturn(mockTweetDAO);
+        Mockito.when(feedServiceSpy.getTweetDAO()).thenReturn(mMockStoryDAO);
     }
 
     @Test

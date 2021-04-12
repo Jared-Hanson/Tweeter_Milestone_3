@@ -8,11 +8,11 @@ import edu.byu.cs.tweeter.model.domain.User;
 public class TweetRequest {
     private User user;
     private String tweetBody;
-    private String date;
+    private Long date;
     private AuthToken authToken;
 
 
-    public TweetRequest(User user, String tweetBody, String date, AuthToken authToken) {
+    public TweetRequest(User user, String tweetBody, Long date, AuthToken authToken) {
         this.user = user;
         this.tweetBody = tweetBody;
         this.date = date;
@@ -30,7 +30,7 @@ public class TweetRequest {
         return tweetBody;
     }
 
-    public String getDate() {
+    public Long getDate() {
         return date;
     }
 
@@ -46,7 +46,7 @@ public class TweetRequest {
         this.tweetBody = tweetBody;
     }
 
-    public void setDate(String date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 

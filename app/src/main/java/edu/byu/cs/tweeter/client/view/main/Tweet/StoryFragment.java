@@ -390,7 +390,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View, GetU
          */
         private void addLoadingFooter() {
             @SuppressLint({"NewApi", "LocalSuppress"}) LocalDate date = LocalDate.now();
-            addItem(new Tweet(new User("Dummy", "User", ""), "User", date.toString()));
+            addItem(new Tweet(new User("Dummy", "User", ""), "User", date.toEpochDay()));
         }
 
         /**

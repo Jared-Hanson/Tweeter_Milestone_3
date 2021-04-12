@@ -12,12 +12,12 @@ import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
-import edu.byu.cs.tweeter.server.dao.TweetDAO;
+import edu.byu.cs.tweeter.server.dao.StoryDAO;
 
 public class GetStoryServiceImplTest {
     private StoryResponse expectedResponse;
     private StoryRequest request;
-    private TweetDAO mockTweetDAO;
+    private StoryDAO mMockStoryDAO;
     private StoryServiceImpl storyServiceSpy;
 
     @BeforeEach
@@ -27,18 +27,18 @@ public class GetStoryServiceImplTest {
         LocalDate date2 = LocalDate.of(2021, 2, 24);
         LocalDate date3 = LocalDate.of(2021, 3, 28);
 
-        Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1.toString());
-        Tweet tweet2 = new Tweet(currentUser, "This is another tweet", date2.toString());
-        Tweet tweet3 = new Tweet(currentUser, "This is yet another tweet", date3.toString());
+        Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1.toEpochDay());
+        Tweet tweet2 = new Tweet(currentUser, "This is another tweet", date2.toEpochDay());
+        Tweet tweet3 = new Tweet(currentUser, "This is yet another tweet", date3.toEpochDay());
 
         request = new StoryRequest(currentUser.getAlias(), 3, null);
 
         expectedResponse = new StoryResponse(Arrays.asList(tweet1, tweet2, tweet3), false);
-        mockTweetDAO = Mockito.mock(TweetDAO.class);
-        Mockito.when(mockTweetDAO.getStory(request)).thenReturn(expectedResponse);
+        mMockStoryDAO = Mockito.mock(StoryDAO.class);
+        Mockito.when(mMockStoryDAO.getStory(request)).thenReturn(expectedResponse);
 
         storyServiceSpy = Mockito.spy(StoryServiceImpl.class);
-        Mockito.when(storyServiceSpy.getTweetDAO()).thenReturn(mockTweetDAO);
+        Mockito.when(storyServiceSpy.getTweetDAO()).thenReturn(mMockStoryDAO);
     }
 
     @Test
