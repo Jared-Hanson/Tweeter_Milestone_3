@@ -12,14 +12,7 @@ import java.util.List;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.*;
-import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
-import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
-import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
-import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ReturnValue;
-import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -67,18 +60,11 @@ public class StoryDAO {
     private final User testUser = new User("Test", "User", "@dummyUserName", MALE_IMAGE_URL, loginFollowers.size(), loginFollowees.size());
 
 
-    private final LocalDate date1 = LocalDate.of(2021, 1, 8);
-    private final LocalDate date2 = LocalDate.of(2021, 2, 9);
-    private final LocalDate date3 = LocalDate.of(2020, 2, 11);
     private final LocalDate date4 = LocalDate.of(2021, 3, 15);
     private final LocalDate date5 = LocalDate.of(2020, 1, 18);
     private final LocalDate date6 = LocalDate.of(2020, 1, 20);
     private final LocalDate date7 = LocalDate.of(2021, 2, 21);
     private final LocalDate date8 = LocalDate.of(2019, 5, 8);
-
-    private final Tweet uTweet1 = new Tweet(testUser, "what a tweet eh", date1.toEpochDay());
-    private final Tweet uTweet2 = new Tweet(testUser, "Second Tweet" + user9.getAlias(), date2.toEpochDay());
-    private final Tweet uTweet3 = new Tweet(testUser, "What https://nba.com a tweet https://byu.edu", date3.toEpochDay());
 
     private final Tweet fTweet1 = new Tweet(user3, "I hate dummy data", date4.toEpochDay());
     private final Tweet fTweet2 = new Tweet(user5, "Who did that?", date5.toEpochDay());
@@ -137,7 +123,7 @@ public class StoryDAO {
                 .withKeyConditionExpression("#ua = :alias")
                 .withNameMap(nameMap)
                 .withValueMap(valueMap)
-                .withScanIndexForward(true)
+                .withScanIndexForward(false)
                 .withMaxResultSize(request.getLimit());
 
         ItemCollection<QueryOutcome> items = null;
@@ -174,37 +160,7 @@ public class StoryDAO {
         }
 
         return new StoryResponse(tweets, morePages);
-
-        /*
-        assert request.getLimit() > 0;
-        assert request.getUserAlias() != null;
-
-        List<Tweet> allTweets = getDummyStory();
-        List<Tweet> responseTweets = new ArrayList<>(request.getLimit());
-
-        Collections.sort(allTweets);
-
-        boolean hasMorePages = false;
-
-        if (request.getLimit() > 0) {
-            int tweetIndex = getTweetStartingIndex(request.getLastTweet(), allTweets);
-
-            for (int limitCounter = 0; tweetIndex < allTweets.size() && limitCounter < request.getLimit(); tweetIndex++, limitCounter++) {
-                responseTweets.add(allTweets.get(tweetIndex));
-            }
-
-            hasMorePages = tweetIndex < allTweets.size();
-        }
-
-        return new StoryResponse(true, responseTweets, hasMorePages);
-
-         */
     }
-
-    private List<Tweet> getDummyStory() {
-        return Arrays.asList(uTweet1, uTweet2, uTweet3);
-    }
-
 
     public StoryResponse getFeed(StoryRequest request) {
 

@@ -8,6 +8,7 @@ dependencies {
     implementation group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.0'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.2'
     testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
-    //implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.0')
     implementation group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.547'
+// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-sqs
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-sqs', version: '1.11.996'
 }

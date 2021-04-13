@@ -9,13 +9,27 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class Tweet implements Comparable<Tweet>{
-    private final User author;
-    private final String body;
-    private final Long date;
+    private User author;
+    private String body;
+    private Long date;
 
     public Tweet(@NotNull User author, @NotNull String body, @NotNull Long date) {
         this.author = author;
         this.body = body;
+        this.date = date;
+    }
+
+    public Tweet(){}
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setDate(Long date) {
         this.date = date;
     }
 

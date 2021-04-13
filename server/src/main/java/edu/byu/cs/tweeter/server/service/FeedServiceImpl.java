@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.server.service;
 import edu.byu.cs.tweeter.model.service.FeedService_I;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
+import edu.byu.cs.tweeter.server.dao.FeedDAO;
 import edu.byu.cs.tweeter.server.dao.StoryDAO;
 
 public class FeedServiceImpl implements FeedService_I {
@@ -18,7 +19,7 @@ public class FeedServiceImpl implements FeedService_I {
      *
      * @return the instance.
      */
-    StoryDAO getTweetDAO() {
-        return new StoryDAO();
+    FeedDAO getTweetDAO() {
+        return new FeedDAO();
     }
 }

@@ -1,5 +1,11 @@
 package edu.byu.cs.tweeter.server.service;
 
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.amazonaws.services.sqs.model.SendMessageResult;
+import com.google.gson.Gson;
+
 import edu.byu.cs.tweeter.model.service.TweetService_I;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
@@ -15,7 +21,17 @@ public class TweetServiceImpl implements TweetService_I {
         TweetResponse result =  getStoryDAO().postTweet(request);
 
         if (result.isSuccess()) {
-            //add sqs
+            Gson gson = new Gson();
+            String messageBody = gson.toJson(request);
+            String queueUrl = "https://sqs.us-west-2.amazonaws.com/223082554131/SimpleTestQueue";
+
+            SendMessageRequest send_msg_request = new SendMessageRequest()
+                    .withQueueUrl(queueUrl)
+                    .withMessageBody(messageBody)
+                    .withDelaySeconds(0);
+
+            AmazonSQS sqs = getSQS();
+            sqs.sendMessage(send_msg_request);
         }
 
         return result;
@@ -34,5 +50,9 @@ public class TweetServiceImpl implements TweetService_I {
 
     public AuthTokenDAO getAuthTokenDAO() {
         return new AuthTokenDAO();
+    }
+
+    public AmazonSQS getSQS() {
+        return AmazonSQSClientBuilder.defaultClient();
     }
 }
