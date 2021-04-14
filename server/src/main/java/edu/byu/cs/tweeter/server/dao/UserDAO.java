@@ -91,7 +91,7 @@ public class UserDAO {
         HashMap<String, String> nameMap = new HashMap<>();
         nameMap.put("#a", "alias");
         HashMap<String, Object> valueMap = new HashMap<>();
-        valueMap.put(":alias", request.getUsername());
+        valueMap.put(":alias", "@" + request.getUsername());
 
         QuerySpec querySpec = new QuerySpec()
                 .withKeyConditionExpression("#a = :alias")
@@ -159,7 +159,7 @@ public class UserDAO {
         HashMap<String, String> nameMap = new HashMap<>();
         nameMap.put("#a", "alias");
         HashMap<String, Object> valueMap = new HashMap<>();
-        valueMap.put(":alias", request.getUsername());
+        valueMap.put(":alias", "@" + request.getUsername());
 
         QuerySpec querySpec = new QuerySpec()
                 .withKeyConditionExpression("#a = :alias")
@@ -212,7 +212,7 @@ public class UserDAO {
 
         try {
             outcome = table
-                    .putItem(new Item().withPrimaryKey("alias", request.getUsername())
+                    .putItem(new Item().withPrimaryKey("alias", "@" + request.getUsername())
                             .withString("firstName", request.getFirstName())
                             .withString("lastName", request.getLastName())
                             .withString("password", request.getPassword())
@@ -230,7 +230,7 @@ public class UserDAO {
 //                MALE_IMAGE_URL);
 //        //user.setImageBytes(request.getImageBytes());
 //        return new LoginResponse(user, new AuthToken());
-        GetUserDataRequest getUserDataRequest = new GetUserDataRequest(request.getUsername());
+        GetUserDataRequest getUserDataRequest = new GetUserDataRequest("@" + request.getUsername());
         GetUserDataResponse getUserDataResponse = getUserFromAlias(getUserDataRequest);
         AuthTokenDAO authTokenDAO = new AuthTokenDAO();
         User user = getUserDataResponse.getUser();
