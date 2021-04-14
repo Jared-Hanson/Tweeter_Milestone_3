@@ -24,6 +24,7 @@ public class FollowActionServiceProxy implements FollowActionService_I {
     }
     public FollowActionResponse isFollowing(FollowActionRequest request) throws IOException, TweeterRemoteException {
         FollowActionResponse res = getServerFacade().isFollowing(request, URL_PATHISFOLLOW);
+        System.out.println(res.getMessage() +  "This was from the DAO");
         return res;
     }
     public ServerFacade_For_M3 getServerFacade() {

@@ -1,16 +1,41 @@
 package edu.byu.cs.tweeter.server.dao;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Index;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.ItemCollection;
+import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
+import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
+import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.FollowActionRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.service.request.GetUserDataRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowActionResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.model.service.response.GetUserDataResponse;
+import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 
 /**
  * A DAO for accessing 'following' data from the database.
@@ -53,10 +78,10 @@ public class FollowingDAO {
      * @return said count.
      */
     public Integer getFolloweeCount(User follower) {
-        // TODO: uses the dummy data.  Replace with a real implementation.
-        assert follower != null;
-        return getDummyFollowees().size();
+        return 42;
     }
+
+
 
     /**
      * Gets the users from the database that the user specified in the request is following. Uses
@@ -69,63 +94,64 @@ public class FollowingDAO {
      * @return the followees.
      */
     public FollowingResponse getFollowees(FollowingRequest request) {
-        // TODO: Generates dummy data. Replace with a real implementation.
-        assert request.getLimit() > 0;
-        assert request.getFollowerAlias() != null;
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withRegion("us-west-2")
+                .build();
 
-        List<User> allFollowees = getDummyFollowees();
-        List<User> responseFollowees = new ArrayList<>(request.getLimit());
+        DynamoDB dynamoDB = new DynamoDB(client);
 
-        boolean hasMorePages = false;
+        Table table = dynamoDB.getTable("follows");
 
-        if(request.getLimit() > 0) {
-            if (allFollowees != null) {
-                int followeesIndex = getFolloweesStartingIndex(request.getLastFolloweeAlias(), allFollowees);
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("#ua", "follower_handle");
+        HashMap<String, Object> valueMap = new HashMap<String, Object>();
+        valueMap.put(":alias", request.getFollowerAlias());
 
-                for(int limitCounter = 0; followeesIndex < allFollowees.size() && limitCounter < request.getLimit(); followeesIndex++, limitCounter++) {
-                    responseFollowees.add(allFollowees.get(followeesIndex));
-                }
+        QuerySpec querySpec = new QuerySpec()
+                .withKeyConditionExpression("#ua = :alias")
+                .withNameMap(nameMap)
+                .withValueMap(valueMap)
+                .withScanIndexForward(false)
+                .withMaxResultSize(request.getLimit());
 
-                hasMorePages = followeesIndex < allFollowees.size();
+        ItemCollection<QueryOutcome> items = null;
+        List<User> users = new ArrayList<>();
+        Boolean morePages = false;
+
+        try {
+            if (request.getLastFolloweeAlias() != null) {
+                querySpec.withExclusiveStartKey("follower_handle", request.getFollowerAlias(),
+                        "followee_handle", request.getLastFolloweeAlias());
             }
-        }
+            items = table.query(querySpec);
+            Iterator<Item> iterator=items.iterator();
+            Item item = null;
+            UserDAO userDAO = new UserDAO();
+            while (iterator.hasNext()) {
+                item=iterator.next();
+                GetUserDataRequest userPosterRequest = new GetUserDataRequest(item.getString("followee_handle"));
+                GetUserDataResponse userPoster = userDAO.getUserFromAlias(userPosterRequest);
+                users.add(userPoster.getUser());
+            }
 
-        return new FollowingResponse(responseFollowees, hasMorePages);
-    }
-
-    /**
-     * Determines the index for the first followee in the specified 'allFollowees' list that should
-     * be returned in the current request. This will be the index of the next followee after the
-     * specified 'lastFollowee'.
-     *
-     * @param lastFolloweeAlias the alias of the last followee that was returned in the previous
-     *                          request or null if there was no previous request.
-     * @param allFollowees the generated list of followees from which we are returning paged results.
-     * @return the index of the first followee to be returned.
-     */
-    private int getFolloweesStartingIndex(String lastFolloweeAlias, List<User> allFollowees) {
-
-        int followeesIndex = 0;
-
-        if(lastFolloweeAlias != null) {
-            // This is a paged request for something after the first page. Find the first item
-            // we should return
-            for (int i = 0; i < allFollowees.size(); i++) {
-                if(lastFolloweeAlias.equals(allFollowees.get(i).getAlias())) {
-                    // We found the index of the last item returned last time. Increment to get
-                    // to the first one we should return
-                    followeesIndex = i + 1;
-                    break;
+            if (item != null) {
+                if (items.getLastLowLevelResult().getQueryResult().getLastEvaluatedKey() != null) {
+                    morePages = true;
                 }
             }
         }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new FollowingResponse("Could not retrieve feed");
+        }
 
-        return followeesIndex;
+        return new FollowingResponse(users, morePages);
     }
+
+
+
     public Integer getFollowerCount(User follower) {
-        // TODO: uses the dummy data.  Replace with a real implementation.
-        assert follower != null;
-        return getDummyFollowees().size();
+        return 45;
     }
 
     /**
@@ -139,85 +165,172 @@ public class FollowingDAO {
      * @return the followees.
      */
     public FollowerResponse getFollowers(FollowerRequest request) {
-        // TODO: Generates dummy data. Replace with a real implementation.
-        assert request.getLimit() > 0;
-        assert request.getFollowerAlias() != null;
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withRegion("us-west-2")
+                .build();
 
-        List<User> allFollowees = getDummyFollowees();
-        List<User> responseFollowees = new ArrayList<>(request.getLimit());
+        DynamoDB dynamoDB = new DynamoDB(client);
 
-        boolean hasMorePages = false;
 
-        if(request.getLimit() > 0) {
-            if (allFollowees != null) {
-                int followeesIndex = getFollowersStartingIndex(request.getLastFolloweeAlias(), allFollowees);
+        Index index = dynamoDB.getTable("follows").getIndex("follows_index");
 
-                for(int limitCounter = 0; followeesIndex < allFollowees.size() && limitCounter < request.getLimit(); followeesIndex++, limitCounter++) {
-                    responseFollowees.add(allFollowees.get(followeesIndex));
-                }
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("#ua", "followee_handle");
+        HashMap<String, Object> valueMap = new HashMap<String, Object>();
+        valueMap.put(":alias", request.getFollowerAlias());
 
-                hasMorePages = followeesIndex < allFollowees.size();
+        QuerySpec querySpec = new QuerySpec()
+                .withKeyConditionExpression("#ua = :alias")
+                .withNameMap(nameMap)
+                .withValueMap(valueMap)
+                .withScanIndexForward(false)
+                .withMaxResultSize(request.getLimit());
+
+        ItemCollection<QueryOutcome> items = null;
+        List<User> users = new ArrayList<>();
+        Boolean morePages = false;
+
+        try {
+            if (request.getLastFolloweeAlias() != null) {
+                querySpec.withExclusiveStartKey("followee_handle", request.getFollowerAlias(),
+                        "follower_handle", request.getLastFolloweeAlias());
             }
-        }
+            items = index.query(querySpec);
+            Iterator<Item> iterator=items.iterator();
+            Item item = null;
+            UserDAO userDAO = new UserDAO();
+            while (iterator.hasNext()) {
+                item=iterator.next();
+                GetUserDataRequest userPosterRequest = new GetUserDataRequest(item.getString("follower_handle"));
+                GetUserDataResponse userPoster = userDAO.getUserFromAlias(userPosterRequest);
+                users.add(userPoster.getUser());
+            }
 
-        return new FollowerResponse(responseFollowees, hasMorePages);
-    }
-
-    /**
-     * Determines the index for the first followee in the specified 'allFollowees' list that should
-     * be returned in the current request. This will be the index of the next followee after the
-     * specified 'lastFollowee'.
-     *
-     * @param lastFolloweeAlias the alias of the last followee that was returned in the previous
-     *                          request or null if there was no previous request.
-     * @param allFollowees the generated list of followees from which we are returning paged results.
-     * @return the index of the first followee to be returned.
-     */
-    private int getFollowersStartingIndex(String lastFolloweeAlias, List<User> allFollowees) {
-
-        int followeesIndex = 0;
-
-        if(lastFolloweeAlias != null) {
-            // This is a paged request for something after the first page. Find the first item
-            // we should return
-            for (int i = 0; i < allFollowees.size(); i++) {
-                if(lastFolloweeAlias.equals(allFollowees.get(i).getAlias())) {
-                    // We found the index of the last item returned last time. Increment to get
-                    // to the first one we should return
-                    followeesIndex = i + 1;
-                    break;
+            if (item != null) {
+                if (items.getLastLowLevelResult().getQueryResult().getLastEvaluatedKey() != null) {
+                    morePages = true;
                 }
             }
         }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new FollowerResponse("Could not retrieve feed");
+        }
 
-        return followeesIndex;
+        return new FollowerResponse(users, morePages);
     }
+
+
 
     public FollowActionResponse followUser(FollowActionRequest request){
-        FollowActionResponse response = new FollowActionResponse(true, "User " + request.getUser().getAlias() + " is now following " + request.getUserToFollow().getAlias());
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withRegion("us-west-2")
+                .build();
+
+        DynamoDB dynamoDB = new DynamoDB(client);
+
+        Table table = dynamoDB.getTable("follows");
+
+        PutItemOutcome outcome;
+
+
+
+        try {
+            //fix, set proper alias
+            outcome = table
+                    .putItem(new Item().withPrimaryKey("follower_handle", request.getUser().getAlias(),
+                            "followee_handle", request.getUserToFollow().getAlias())
+                            .withString( "followee_name", request.getUserToFollow().getFirstName())
+                            .withString("follower_name", request.getUser().getFirstName()));
+        } catch (Exception e) {
+            return new FollowActionResponse(false, e.getMessage());
+        }
+
+        if (outcome == null) {
+            return new FollowActionResponse(false, "Post tweet failed2");
+        }
+
+        FollowActionResponse response = new FollowActionResponse(true,"well done, it worked");
         return response;
     }
+
     public FollowActionResponse unFollowUser(FollowActionRequest request){
-        FollowActionResponse response = new FollowActionResponse(true, "User @" + request.getUser().getAlias() + " is no longer following @" + request.getUserToFollow().getAlias());
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withRegion("us-west-2")
+                .build();
+
+        DynamoDB dynamoDB = new DynamoDB(client);
+
+        Table table = dynamoDB.getTable("follows");
+
+        DeleteItemOutcome outcome;
+        DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
+                .withPrimaryKey(new PrimaryKey("follower_handle", request.getUser().getAlias(), "followee_handle", request.getUserToFollow().getAlias()));
+
+        try {
+            //fix, set proper alias
+            outcome = table.deleteItem(deleteItemSpec);
+        } catch (Exception e) {
+            return new FollowActionResponse(false, e.getMessage());
+        }
+
+        if (outcome == null) {
+            return new FollowActionResponse(false, "Post tweet failed2");
+        }
+
+        FollowActionResponse response = new FollowActionResponse(true,"well done, it worked");
         return response;
     }
     public FollowActionResponse isFollowing(FollowActionRequest request){
-        FollowActionResponse response;
-        if(loginFollowees.contains(request.getUserToFollow())) {
-            response = new FollowActionResponse(true);
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withRegion("us-west-2")
+                .build();
+
+        DynamoDB dynamoDB = new DynamoDB(client);
+
+
+        Table index = dynamoDB.getTable("follows");
+
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("#ua", "follower_handle");
+        nameMap.put("#fa", "followee_handle");
+        HashMap<String, Object> valueMap = new HashMap<String, Object>();
+        valueMap.put(":alias", request.getUser().getAlias());
+        valueMap.put(":Falias", request.getUserToFollow().getAlias());
+
+        QuerySpec querySpec = new QuerySpec()
+                .withKeyConditionExpression("#ua = :alias and #fa = :Falias")
+                .withNameMap(nameMap)
+                .withValueMap(valueMap)
+                .withScanIndexForward(false);
+
+        ItemCollection<QueryOutcome> items = null;
+
+
+        boolean hasValues;
+        try {
+
+            items = index.query(querySpec);
+            Iterator<Item> iterator =items.iterator();
+
+
+            if (iterator.hasNext()) {
+                hasValues = true;
+            }
+            else {
+                hasValues = false;
+            }
         }
-        else{
-            response = new FollowActionResponse(false);
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new FollowActionResponse(false, "Could not retrieve feed");
         }
-        return response;
+
+        return new FollowActionResponse(hasValues, "retreaved value");
+
     }
 
-    /**
-     * Returns the list of dummy followee data. This is written as a separate method to allow
-     * mocking of the followees.
-     *
-     * @return the followees.
-     */
+
     List<User> getDummyFollowees() {
         return Arrays.asList(user1, user2, user3, user4, user5, user6, user7,
                 user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,

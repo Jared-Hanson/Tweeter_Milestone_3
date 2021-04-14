@@ -19,7 +19,7 @@ public class FeedServiceImpl implements FeedService_I {
      *
      * @return the instance.
      */
-    FeedDAO getTweetDAO() {
-        return new FeedDAO();
+    StoryDAO getTweetDAO() {
+        return new StoryDAO();
     }
 }

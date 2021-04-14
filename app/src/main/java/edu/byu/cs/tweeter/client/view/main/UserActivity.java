@@ -107,10 +107,12 @@ public class UserActivity extends AppCompatActivity {
                 if(isFollowing){
                     // call async task/observer to do the follow/unfollow action
                     new unFollowUser().executeTask(new FollowActionRequest(loggedInUser, user, authToken));
+                    new checkFollow().executeTask(new FollowActionRequest(loggedInUser, user));
                 }
                 else{
 
                     new followUser().executeTask(new FollowActionRequest(loggedInUser, user, authToken));
+                    new checkFollow().executeTask(new FollowActionRequest(loggedInUser, user));
                 }
             }
         });
@@ -186,7 +188,7 @@ public class UserActivity extends AppCompatActivity {
 
         @Override
         void goodResponse() {
-            isFollowing = true;
+            isFollowing = false;
             // update follower data
             new getFollowerData().GetDataFunction(new FollowDataRequest(user));
             Toast.makeText(getApplicationContext(), "User has been UN-followed: We have received and updated follower/followee data", Toast.LENGTH_LONG).show();
