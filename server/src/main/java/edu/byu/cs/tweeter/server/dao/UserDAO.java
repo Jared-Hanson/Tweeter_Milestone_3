@@ -115,19 +115,14 @@ public class UserDAO {
             Iterator<Item> iterator = items.iterator();
             Item item;
             boolean validPass = false;
-            int count = 0;
             while(iterator.hasNext()) {
-                count++;
                 item = iterator.next();
                 String hashed = hashPassword(request.getPassword());
-                System.out.println(item.get("password"));
-                System.out.println(hashed);
                 if(item.get("password").equals(hashed)) {
                     validPass = true;
                 }
                 break;
             }
-            System.out.println(count);
             if(!validPass) {
                 return new LoginResponse("incorrect password");
             }
@@ -171,10 +166,12 @@ public class UserDAO {
 
         String imageUrl;
         try {
-            byte[] encoded = Base64.getEncoder().encode(request.getImageBytes());
+            System.out.println("here");
+            System.out.println(request.getImageBytes());
+            //byte[] encoded = Base64.getEncoder().encode(request.getImageBytes());
             ObjectMetadata meta = new ObjectMetadata();
-            meta.setContentLength(encoded.length);
-            PutObjectRequest putObjectRequest = new PutObjectRequest("cs340images", fileName, new ByteArrayInputStream(encoded), meta)
+            meta.setContentLength(request.getImageBytes().length);
+            PutObjectRequest putObjectRequest = new PutObjectRequest("cs340images", fileName, new ByteArrayInputStream(request.getImageBytes()), meta)
                     .withCannedAcl(CannedAccessControlList.PublicRead);
             s3.putObject(putObjectRequest);
 

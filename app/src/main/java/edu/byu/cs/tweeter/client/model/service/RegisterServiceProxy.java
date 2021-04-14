@@ -44,7 +44,7 @@ public class RegisterServiceProxy implements RegisterService_I {
      */
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void loadImage(User user) throws IOException {
-        byte [] bytes = Base64.getDecoder().decode(ByteArrayUtils.bytesFromUrl(user.getImageUrl()));
+        byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
         user.setImageBytes(bytes);
     }
 
