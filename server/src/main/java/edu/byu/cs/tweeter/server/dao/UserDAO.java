@@ -106,8 +106,7 @@ public class UserDAO {
                 .withKeyConditionExpression("#a = :alias")
                 .withNameMap(nameMap)
                 .withValueMap(valueMap)
-                .withScanIndexForward(false)
-                .withMaxPageSize(1);
+                .withScanIndexForward(false);
 
         ItemCollection<QueryOutcome> items = null;
 
@@ -162,6 +161,29 @@ public class UserDAO {
     }
 
     public LoginResponse register(RegisterRequest request) {
+        PutItemOutcome outcome;
+        //String imageBytes = Base64.getEncoder().encodeToString(request.getImageBytes());
+        String fileName = request.getUsername() + "_image.png";
+        AmazonS3Client s3 = (AmazonS3Client)AmazonS3ClientBuilder
+                .standard()
+                .withRegion("us-west-2")
+                .build();
+
+        String imageUrl;
+        try {
+            byte[] encoded = Base64.getEncoder().encode(request.getImageBytes());
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentLength(encoded.length);
+            PutObjectRequest putObjectRequest = new PutObjectRequest("cs340images", fileName, new ByteArrayInputStream(encoded), meta)
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
+            s3.putObject(putObjectRequest);
+
+            imageUrl = s3.getResourceUrl("cs340images", fileName);
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
+            return new LoginResponse("Couldn't upload image to s3");
+        }
+
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
                 .withRegion("us-west-2")
                 .build();
@@ -179,8 +201,7 @@ public class UserDAO {
                 .withKeyConditionExpression("#a = :alias")
                 .withNameMap(nameMap)
                 .withValueMap(valueMap)
-                .withScanIndexForward(false)
-                .withMaxPageSize(1);
+                .withScanIndexForward(false);
 
         ItemCollection<QueryOutcome> items = null;
         //List<User> users = new ArrayList<>();
@@ -202,25 +223,25 @@ public class UserDAO {
             return new LoginResponse("Couldn't access table");
         }
 
-        PutItemOutcome outcome;
-        //String imageBytes = Base64.getEncoder().encodeToString(request.getImageBytes());
-        String fileName = request.getUsername() + "_image.png";
-        AmazonS3Client s3 = (AmazonS3Client)AmazonS3ClientBuilder
-                .standard()
-                .withRegion("us-west-2")
-                .build();
-
-        String imageUrl;
-        try {
-            byte[] encoded = Base64.getEncoder().encode(request.getImageBytes());
-            PutObjectRequest putObjectRequest = new PutObjectRequest("cs340images", fileName, new ByteArrayInputStream(encoded), new ObjectMetadata())
-                    .withCannedAcl(CannedAccessControlList.PublicRead);
-            s3.putObject(putObjectRequest);
-
-            imageUrl = s3.getResourceUrl("cs340images", fileName);
-        } catch (AmazonServiceException e) {
-            return new LoginResponse("Couldn't upload image to s3");
-        }
+//        PutItemOutcome outcome;
+//        //String imageBytes = Base64.getEncoder().encodeToString(request.getImageBytes());
+//        String fileName = request.getUsername() + "_image.png";
+//        AmazonS3Client s3 = (AmazonS3Client)AmazonS3ClientBuilder
+//                .standard()
+//                .withRegion("us-west-2")
+//                .build();
+//
+//        String imageUrl;
+//        try {
+//            byte[] encoded = Base64.getEncoder().encode(request.getImageBytes());
+//            PutObjectRequest putObjectRequest = new PutObjectRequest("cs340images", fileName, new ByteArrayInputStream(encoded), new ObjectMetadata())
+//                    .withCannedAcl(CannedAccessControlList.PublicRead);
+//            s3.putObject(putObjectRequest);
+//
+//            imageUrl = s3.getResourceUrl("cs340images", fileName);
+//        } catch (AmazonServiceException e) {
+//            return new LoginResponse("Couldn't upload image to s3");
+//        }
 
         try {
             outcome = table
@@ -274,8 +295,7 @@ public class UserDAO {
                 .withKeyConditionExpression("#a = :alias")
                 .withNameMap(nameMap)
                 .withValueMap(valueMap)
-                .withScanIndexForward(false)
-                .withMaxPageSize(1);
+                .withScanIndexForward(false);
 
         ItemCollection<QueryOutcome> items = null;
 
