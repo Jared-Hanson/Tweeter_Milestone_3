@@ -122,7 +122,7 @@ public class UserDAO {
             return new LoginResponse("Couldn't access table");
         }
 
-        GetUserDataRequest getUserDataRequest = new GetUserDataRequest(request.getUsername());
+        GetUserDataRequest getUserDataRequest = new GetUserDataRequest("@" + request.getUsername());
         GetUserDataResponse getUserDataResponse = getUserFromAlias(getUserDataRequest);
         AuthTokenDAO authTokenDAO = new AuthTokenDAO();
         User user = getUserDataResponse.getUser();
@@ -260,6 +260,7 @@ public class UserDAO {
         HashMap<String, String> nameMap = new HashMap<>();
         nameMap.put("#a", "alias");
         HashMap<String, Object> valueMap = new HashMap<>();
+        System.out.println(request.getAlias());
         valueMap.put(":alias", request.getAlias());
 
         QuerySpec querySpec = new QuerySpec()
