@@ -10,6 +10,7 @@ import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,7 +43,7 @@ public class AuthTokenDAO {
 
         ItemCollection<QueryOutcome> items = null;
         //List<User> users = new ArrayList<>();
-        boolean old = false;
+        boolean old = true;
 
         try {
             items = table.query(querySpec);
@@ -51,8 +52,9 @@ public class AuthTokenDAO {
             while(iterator.hasNext()) {
                 item = iterator.next();
                 //check if token is older than 10 minutes
-                if((Instant.now().toEpochMilli() - (Long)item.get("epoch_date")) > 600000) {
-                    old = true;
+                BigDecimal big = (BigDecimal) item.get("epoch_date");
+                if((Instant.now().toEpochMilli() - big.longValue()) > 600000) {
+                    old = false;
                 }
                 break;
             }

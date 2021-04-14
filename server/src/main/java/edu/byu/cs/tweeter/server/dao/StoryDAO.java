@@ -36,10 +36,12 @@ public class StoryDAO {
         PutItemOutcome outcome;
 
         try {
+
             outcome = table
                     .putItem(new Item().withPrimaryKey("user_alias", request.getUser(),
-                            "epoch_date", request.getDate())
+                            "epoch_date", request.getDate().longValue())
                             .withString("tweet_body", request.getTweetBody()));
+
         } catch (Exception e) {
             return new TweetResponse(false, "Post tweet failed");
         }
