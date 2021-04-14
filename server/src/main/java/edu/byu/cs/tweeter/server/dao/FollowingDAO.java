@@ -78,7 +78,49 @@ public class FollowingDAO {
      * @return said count.
      */
     public Integer getFolloweeCount(User follower) {
-        return 42;
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withRegion("us-west-2")
+                .build();
+        int length = 0;
+        DynamoDB dynamoDB = new DynamoDB(client);
+
+        Table table = dynamoDB.getTable("follows");
+
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("#ua", "follower_handle");
+        HashMap<String, Object> valueMap = new HashMap<String, Object>();
+        valueMap.put(":alias", follower.getAlias());
+
+        QuerySpec querySpec = new QuerySpec()
+                .withKeyConditionExpression("#ua = :alias")
+                .withNameMap(nameMap)
+                .withValueMap(valueMap)
+                .withScanIndexForward(false);
+
+
+        ItemCollection<QueryOutcome> items = null;
+        List<User> users = new ArrayList<>();
+        Boolean morePages = false;
+
+        try {
+                items = table.query(querySpec);
+                Iterator<Item> iterator = items.iterator();
+                Item item = null;
+                UserDAO userDAO = new UserDAO();
+                while (iterator.hasNext()) {
+                    item = iterator.next();
+                    length += 1;
+                }
+
+
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return  -1;
+        }
+
+        return length;
+
     }
 
 
@@ -151,7 +193,48 @@ public class FollowingDAO {
 
 
     public Integer getFollowerCount(User follower) {
-        return 45;
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+                .withRegion("us-west-2")
+                .build();
+        int length = 0;
+        DynamoDB dynamoDB = new DynamoDB(client);
+
+        Index table = dynamoDB.getTable("follows").getIndex("follows_index");
+
+        HashMap<String, String> nameMap = new HashMap<String, String>();
+        nameMap.put("#ua", "followee_handle");
+        HashMap<String, Object> valueMap = new HashMap<String, Object>();
+        valueMap.put(":alias", follower.getAlias());
+
+        QuerySpec querySpec = new QuerySpec()
+                .withKeyConditionExpression("#ua = :alias")
+                .withNameMap(nameMap)
+                .withValueMap(valueMap)
+                .withScanIndexForward(false);
+
+
+        ItemCollection<QueryOutcome> items = null;
+        List<User> users = new ArrayList<>();
+        Boolean morePages = false;
+
+        try {
+            items = table.query(querySpec);
+            Iterator<Item> iterator = items.iterator();
+            Item item = null;
+            UserDAO userDAO = new UserDAO();
+            while (iterator.hasNext()) {
+                item = iterator.next();
+                length += 1;
+            }
+
+
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return  -1;
+        }
+
+        return length;
     }
 
     /**
