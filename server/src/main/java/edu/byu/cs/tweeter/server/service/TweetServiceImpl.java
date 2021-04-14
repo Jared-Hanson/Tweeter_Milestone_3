@@ -15,11 +15,13 @@ import edu.byu.cs.tweeter.server.dao.StoryDAO;
 public class TweetServiceImpl implements TweetService_I {
     @Override
     public TweetResponse postTweet(TweetRequest request){
+        System.out.println("Service" + getAuthTokenDAO().checkToken(request.getAuthToken()));
         if (!getAuthTokenDAO().checkToken(request.getAuthToken())) {
             return new TweetResponse(false, "Invalid Authorization");
         }
+        System.out.println("Service 2");
         TweetResponse result =  getStoryDAO().postTweet(request);
-
+        System.out.println("Service 3");
         if (result.isSuccess()) {
             Gson gson = new Gson();
             String messageBody = gson.toJson(request);
