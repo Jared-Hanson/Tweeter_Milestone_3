@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements LogoutTask.Observ
                 String inText = input.getText().toString();
                 User user = (User) getIntent().getSerializableExtra(CURRENT_USER_KEY);
                 Long date = LocalDateTime.now().toEpochSecond(UTC);
-                TweetRequest request = new TweetRequest(user, inText, date, authToken);
+                TweetRequest request = new TweetRequest(user.getAlias(), inText, date, authToken);
                 new postTweetDialogBOX().postTweet(request);
 
             }

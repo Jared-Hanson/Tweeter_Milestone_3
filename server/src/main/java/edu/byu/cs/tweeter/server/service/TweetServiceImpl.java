@@ -23,7 +23,7 @@ public class TweetServiceImpl implements TweetService_I {
         if (result.isSuccess()) {
             Gson gson = new Gson();
             String messageBody = gson.toJson(request);
-            String queueUrl = "https://sqs.us-west-2.amazonaws.com/223082554131/SimpleTestQueue";
+            String queueUrl = "https://sqs.us-west-2.amazonaws.com/223082554131/feed_queue_follower_phase";
 
             SendMessageRequest send_msg_request = new SendMessageRequest()
                     .withQueueUrl(queueUrl)

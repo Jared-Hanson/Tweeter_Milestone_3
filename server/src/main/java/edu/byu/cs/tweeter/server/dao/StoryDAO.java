@@ -90,7 +90,7 @@ public class StoryDAO {
 
         try {
             outcome = table
-                    .putItem(new Item().withPrimaryKey("user_alias", request.getUser().getAlias(),
+                    .putItem(new Item().withPrimaryKey("user_alias", request.getUser(),
                             "epoch_date", request.getDate())
                             .withString("tweet_body", request.getTweetBody()));
         } catch (Exception e) {
@@ -132,7 +132,8 @@ public class StoryDAO {
 
         try {
             if (request.getLastTweet() != null) {
-                querySpec.withExclusiveStartKey("user_alias", request.getLastTweet().getAuthor(),
+                querySpec.withExclusiveStartKey("user_alias",
+                        request.getLastTweet().getAuthor().getAlias(),
                         "epoch_date", request.getLastTweet().getDate());
             }
             items = table.query(querySpec);
@@ -155,7 +156,7 @@ public class StoryDAO {
             }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("EXCEPTION THROWN: " + e.getMessage());
             return new StoryResponse("Could not retrieve story");
         }
 

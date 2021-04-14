@@ -17,6 +17,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.service.request.GetUserDataRequest;
+import edu.byu.cs.tweeter.model.service.request.PostToFeedRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.request.TweetRequest;
 import edu.byu.cs.tweeter.model.service.response.GetUserDataResponse;
@@ -24,7 +25,7 @@ import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.model.service.response.TweetResponse;
 
 public class FeedDAO {
-    public TweetResponse postTweet(TweetRequest request) {
+    public TweetResponse postTweet(PostToFeedRequest request) {
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
                 .withRegion("us-west-2")
                 .build();
@@ -38,11 +39,12 @@ public class FeedDAO {
         try {
             //fix, set proper alias
             outcome = table
-                    .putItem(new Item().withPrimaryKey("follower_alias", request.getUser().getAlias(),
+                    .putItem(new Item().withPrimaryKey("follower_alias", request.getFollower(),
                             "epoch_date", request.getDate())
                             .withString("tweet_body", request.getTweetBody())
-                            .withString("user_alias", request.getUser().getAlias()));
+                            .withString("user_alias", request.getUser()));
         } catch (Exception e) {
+            System.out.println("Exception thrown");
             return new TweetResponse(false, "Post tweet failed");
         }
 
