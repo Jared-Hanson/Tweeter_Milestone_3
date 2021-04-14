@@ -37,8 +37,7 @@ public class AuthTokenDAO {
                 .withKeyConditionExpression("#a = :authToken")
                 .withNameMap(nameMap)
                 .withValueMap(valueMap)
-                .withScanIndexForward(false)
-                .withMaxPageSize(1);
+                .withScanIndexForward(false);
 
         ItemCollection<QueryOutcome> items = null;
         //List<User> users = new ArrayList<>();
