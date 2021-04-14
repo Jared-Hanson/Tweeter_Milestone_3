@@ -12,8 +12,7 @@ import edu.byu.cs.tweeter.server.dao.UserDAO;
 public class LogoutServiceImpl implements LogoutService_I {
     @Override
     public LogoutResponse logout(LogoutRequest request) throws IOException, TweeterRemoteException {
-        UserDAO userDAO = getUserDAO();
-        LogoutResponse response = userDAO.logout(request);
+        LogoutResponse response = getAuthTokenDAO().logout(request);
         if(response.isSuccess()) {
            AuthTokenDAO authTokenDAO = getAuthTokenDAO();
            authTokenDAO.removeToken(request.getAuthToken());

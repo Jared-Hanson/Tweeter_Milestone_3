@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import java.io.ByteArrayOutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
@@ -153,13 +155,30 @@ public class RegisterFragment extends RegisterSubject implements RegisterPresent
                 registertoast = Toast.makeText(getActivity(), "registering", Toast.LENGTH_LONG);
                 registertoast.show();
 
-                RegisterRequest registerRequest = new RegisterRequest(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), usernameEditText.getText().toString(), passwordEditText.getText().toString(), imageBytes);
+                String hashedPass = hashPassword(passwordEditText.getText().toString());
+                RegisterRequest registerRequest = new RegisterRequest(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), usernameEditText.getText().toString(), hashedPass, imageBytes);
                 RegisterTask registerTask = new RegisterTask(presenter, RegisterFragment.this);
                 registerTask.execute(registerRequest);
             }
         });
 
         return view;
+    }
+
+    private static String hashPassword(String passwordToHash) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(passwordToHash.getBytes());
+            byte[] bytes = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte aByte : bytes) {
+                sb.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return "FAILED TO HASH";
     }
 
     @Override

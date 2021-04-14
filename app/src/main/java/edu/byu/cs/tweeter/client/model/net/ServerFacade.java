@@ -131,12 +131,12 @@ public class ServerFacade {
         Log.d("info", "login: " + request.getPassword());
         if (request.getUsername().equals("dummyUserName") && request.getPassword().equals("dummyPassword")) {
             Log.d("info", "logged in?");
-            return new LoginResponse(testUser, new AuthToken());
+            return new LoginResponse(testUser, new AuthToken(testUser));
         }
         // this is here becuase i got tired of typing that long user name in each time
         else if (request.getUsername().equals("d") && request.getPassword().equals("dddddddd")) {
             Log.d("info", "logged in?");
-            return new LoginResponse(testUser, new AuthToken());
+            return new LoginResponse(testUser, new AuthToken(testUser));
         }
         else {
             return new LoginResponse("Invalid credentials");
@@ -171,7 +171,7 @@ public class ServerFacade {
         User user = new User(request.getFirstName(), request.getLastName(), request.getUsername(),
                 null);
         user.setImageBytes(request.getImageBytes());
-        return new LoginResponse(user, new AuthToken());
+        return new LoginResponse(user, new AuthToken(user));
     }
 
     public LogoutResponse logout(LogoutRequest logoutRequest) {

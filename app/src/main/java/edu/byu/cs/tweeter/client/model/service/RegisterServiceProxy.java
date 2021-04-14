@@ -1,6 +1,11 @@
 package edu.byu.cs.tweeter.client.model.service;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.IOException;
+import java.util.Base64;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -18,6 +23,7 @@ public class RegisterServiceProxy implements RegisterService_I {
 
     private static final String URL_PATH = "/register";
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public LoginResponse register(RegisterRequest request) throws IOException, TweeterRemoteException {
 
 
@@ -36,8 +42,9 @@ public class RegisterServiceProxy implements RegisterService_I {
      *
      * @param user the user whose profile image data is to be loaded.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void loadImage(User user) throws IOException {
-        byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
+        byte [] bytes = Base64.getDecoder().decode(ByteArrayUtils.bytesFromUrl(user.getImageUrl()));
         user.setImageBytes(bytes);
     }
 

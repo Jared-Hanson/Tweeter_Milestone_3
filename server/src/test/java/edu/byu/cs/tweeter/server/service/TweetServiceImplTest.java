@@ -26,7 +26,7 @@ public class TweetServiceImplTest {
         LocalDate date1 = LocalDate.of(2021, 1, 8);
         Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1.toEpochDay());
 
-        request = new TweetRequest(currentUser, tweet1.getBody(), date1.toEpochDay(), new AuthToken());
+        request = new TweetRequest(currentUser.getAlias(), tweet1.getBody(), date1.toEpochDay(), new AuthToken(currentUser));
 
         expectedResponse = new TweetResponse(true);
         mMockStoryDAO = Mockito.mock(StoryDAO.class);

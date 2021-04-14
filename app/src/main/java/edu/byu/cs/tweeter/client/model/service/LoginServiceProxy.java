@@ -1,6 +1,11 @@
 package edu.byu.cs.tweeter.client.model.service;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.IOException;
+import java.util.Base64;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
@@ -18,6 +23,7 @@ public class LoginServiceProxy implements LoginService_I {
 
     private static final String URL_PATH = "/login";
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public LoginResponse login(LoginRequest request) throws IOException, TweeterRemoteException {
         ServerFacade_For_M3 serverFacade = getServerFacade();
         LoginResponse loginResponse = serverFacade.login(request, URL_PATH);
@@ -34,8 +40,9 @@ public class LoginServiceProxy implements LoginService_I {
      *
      * @param user the user whose profile image data is to be loaded.
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void loadImage(User user) throws IOException {
-        byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
+        byte [] bytes = Base64.getDecoder().decode(ByteArrayUtils.bytesFromUrl(user.getImageUrl()));
         user.setImageBytes(bytes);
     }
 

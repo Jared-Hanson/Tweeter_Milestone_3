@@ -28,7 +28,7 @@ public class LogoutServiceImplTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
-        AuthToken token = new AuthToken();
+        AuthToken token = new AuthToken(currentUser);
 
 
         // Setup request objects to use in the tests
@@ -37,16 +37,15 @@ public class LogoutServiceImplTest {
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new LogoutResponse(true, "success");
-        UserDAO mockUserDao = Mockito.mock(UserDAO.class);
-        Mockito.when(mockUserDao.logout(validRequest)).thenReturn(successResponse);
+        AuthTokenDAO mockAuthTokenDao = Mockito.mock(AuthTokenDAO.class);
+        Mockito.when(mockAuthTokenDao.logout(validRequest)).thenReturn(successResponse);
 
         failureResponse = new LogoutResponse(false, "An exception occurred");
-        Mockito.when(mockUserDao.logout(invalidRequest)).thenReturn(failureResponse);
+        Mockito.when(mockAuthTokenDao.logout(invalidRequest)).thenReturn(failureResponse);
 
         logoutServiceSpy = Mockito.spy(new LogoutServiceImpl());
-        Mockito.when(logoutServiceSpy.getUserDAO()).thenReturn(mockUserDao);
+        Mockito.when(logoutServiceSpy.getAuthTokenDAO()).thenReturn(mockAuthTokenDao);
 
-        AuthTokenDAO mockAuthTokenDao = Mockito.mock(AuthTokenDAO.class);
         Mockito.when(logoutServiceSpy.getAuthTokenDAO()).thenReturn(mockAuthTokenDao);
     }
 

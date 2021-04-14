@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.client.model.service;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade_For_M3;
 import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
