@@ -12,12 +12,13 @@ import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
+import edu.byu.cs.tweeter.server.dao.FeedDAO;
 import edu.byu.cs.tweeter.server.dao.StoryDAO;
 
 public class GetFeedServiceImplTest {
     private StoryResponse expectedResponse;
     private StoryRequest request;
-    private StoryDAO mMockStoryDAO;
+    private FeedDAO mMockFeedDAO;
     private FeedServiceImpl feedServiceSpy;
 
     @BeforeEach
@@ -39,11 +40,11 @@ public class GetFeedServiceImplTest {
         request = new StoryRequest(currentUser.getAlias(), 3, null);
 
         expectedResponse = new StoryResponse(Arrays.asList(tweet1, tweet2, tweet3), false);
-        mMockStoryDAO = Mockito.mock(StoryDAO.class);
-        Mockito.when(mMockStoryDAO.getFeed(request)).thenReturn(expectedResponse);
+        mMockFeedDAO = Mockito.mock(FeedDAO.class);
+        Mockito.when(mMockFeedDAO.getFeed(request)).thenReturn(expectedResponse);
 
         feedServiceSpy = Mockito.spy(FeedServiceImpl.class);
-        Mockito.when(feedServiceSpy.getTweetDAO()).thenReturn(mMockStoryDAO);
+        Mockito.when(feedServiceSpy.getTweetDAO()).thenReturn(mMockFeedDAO);
     }
 
     @Test

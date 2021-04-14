@@ -30,7 +30,7 @@ public class TweetServiceImpl implements TweetService_I {
                     .withMessageBody(messageBody)
                     .withDelaySeconds(0);
 
-            AmazonSQS sqs = getSQS();
+            AmazonSQS sqs = getSQS(testing());
             sqs.sendMessage(send_msg_request);
         }
 
@@ -52,7 +52,16 @@ public class TweetServiceImpl implements TweetService_I {
         return new AuthTokenDAO();
     }
 
-    public AmazonSQS getSQS() {
-        return AmazonSQSClientBuilder.defaultClient();
+    public boolean testing() {
+        return false;
+    }
+
+    public AmazonSQS getSQS(boolean testing) {
+        if (!testing) {
+            return AmazonSQSClientBuilder.defaultClient();
+        }
+        else {
+            return null;
+        }
     }
 }
