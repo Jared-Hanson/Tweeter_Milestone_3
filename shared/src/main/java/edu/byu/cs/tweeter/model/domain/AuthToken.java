@@ -15,6 +15,9 @@ public class AuthToken implements Serializable {
         this.token = generateToken();
     }
 
+    public AuthToken() {
+    }
+
     public String getToken() {
         return token;
     }
@@ -25,5 +28,13 @@ public class AuthToken implements Serializable {
 
     public User getUser() {
         return user;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

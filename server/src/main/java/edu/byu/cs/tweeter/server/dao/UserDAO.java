@@ -26,7 +26,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,13 +34,9 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.GetUserDataRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
-import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.model.service.response.GetUserDataResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
-import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
-import edu.byu.cs.tweeter.server.lambda.GetUserDataHandler;
-import edu.byu.cs.tweeter.server.service.GetUserDataServiceImpl;
 
 public class UserDAO {
     // This is the hard coded followee data returned by the 'getFollowees()' method
@@ -84,10 +79,6 @@ public class UserDAO {
     private final User testUser = new User("Test", "User", "@dummyUserName", MALE_IMAGE_URL, loginFollowers.size(), loginFollowees.size());
 
     public LoginResponse login(LoginRequest request) {
-
-        if(request.getUsername().equals("d") && request.getPassword().equals("dddddddd")) {
-            return new LoginResponse(testUser, new AuthToken(testUser));
-        }
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
                 .withRegion("us-west-2")
@@ -156,31 +147,6 @@ public class UserDAO {
     }
 
     public LoginResponse register(RegisterRequest request) {
-        PutItemOutcome outcome;
-        //String imageBytes = Base64.getEncoder().encodeToString(request.getImageBytes());
-        String fileName = request.getUsername() + "_image.png";
-        AmazonS3Client s3 = (AmazonS3Client)AmazonS3ClientBuilder
-                .standard()
-                .withRegion("us-west-2")
-                .build();
-
-        String imageUrl;
-        try {
-            System.out.println("here");
-            System.out.println(request.getImageBytes());
-            //byte[] encoded = Base64.getEncoder().encode(request.getImageBytes());
-            ObjectMetadata meta = new ObjectMetadata();
-            meta.setContentLength(request.getImageBytes().length);
-            PutObjectRequest putObjectRequest = new PutObjectRequest("cs340images", fileName, new ByteArrayInputStream(request.getImageBytes()), meta)
-                    .withCannedAcl(CannedAccessControlList.PublicRead);
-            s3.putObject(putObjectRequest);
-
-            imageUrl = s3.getResourceUrl("cs340images", fileName);
-        } catch (AmazonServiceException e) {
-            e.printStackTrace();
-            return new LoginResponse("Couldn't upload image to s3");
-        }
-
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
                 .withRegion("us-west-2")
                 .build();
@@ -220,25 +186,28 @@ public class UserDAO {
             return new LoginResponse("Couldn't access table");
         }
 
-//        PutItemOutcome outcome;
-//        //String imageBytes = Base64.getEncoder().encodeToString(request.getImageBytes());
-//        String fileName = request.getUsername() + "_image.png";
-//        AmazonS3Client s3 = (AmazonS3Client)AmazonS3ClientBuilder
-//                .standard()
-//                .withRegion("us-west-2")
-//                .build();
-//
-//        String imageUrl;
-//        try {
-//            byte[] encoded = Base64.getEncoder().encode(request.getImageBytes());
-//            PutObjectRequest putObjectRequest = new PutObjectRequest("cs340images", fileName, new ByteArrayInputStream(encoded), new ObjectMetadata())
-//                    .withCannedAcl(CannedAccessControlList.PublicRead);
-//            s3.putObject(putObjectRequest);
-//
-//            imageUrl = s3.getResourceUrl("cs340images", fileName);
-//        } catch (AmazonServiceException e) {
-//            return new LoginResponse("Couldn't upload image to s3");
-//        }
+        PutItemOutcome outcome;
+        //String imageBytes = Base64.getEncoder().encodeToString(request.getImageBytes());
+        String fileName = request.getUsername() + "_image.png";
+        AmazonS3Client s3 = (AmazonS3Client)AmazonS3ClientBuilder
+                .standard()
+                .withRegion("us-west-2")
+                .build();
+
+        String imageUrl;
+        try {
+            //byte[] encoded = Base64.getEncoder().encode(request.getImageBytes());
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentLength(request.getImageBytes().length);
+            PutObjectRequest putObjectRequest = new PutObjectRequest("cs340images", fileName, new ByteArrayInputStream(request.getImageBytes()), meta)
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
+            s3.putObject(putObjectRequest);
+
+            imageUrl = s3.getResourceUrl("cs340images", fileName);
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
+            return new LoginResponse("Couldn't upload image to s3");
+        }
 
         try {
             outcome = table
