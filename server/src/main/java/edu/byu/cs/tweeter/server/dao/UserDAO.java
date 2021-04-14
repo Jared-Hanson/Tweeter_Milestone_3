@@ -229,8 +229,12 @@ public class UserDAO {
 //                MALE_IMAGE_URL);
 //        //user.setImageBytes(request.getImageBytes());
 //        return new LoginResponse(user, new AuthToken());
-        LoginRequest loginRequest = new LoginRequest(request.getUsername(), request.getPassword());
-        return login(loginRequest);
+        GetUserDataRequest getUserDataRequest = new GetUserDataRequest(request.getUsername());
+        GetUserDataResponse getUserDataResponse = getUserFromAlias(getUserDataRequest);
+        AuthTokenDAO authTokenDAO = new AuthTokenDAO();
+        User user = getUserDataResponse.getUser();
+        authTokenDAO.addToken(new AuthToken(user));
+        return new LoginResponse(user, new AuthToken(user));
     }
 
 

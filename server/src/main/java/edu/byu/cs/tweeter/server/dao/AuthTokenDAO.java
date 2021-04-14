@@ -74,7 +74,8 @@ public class AuthTokenDAO {
 
         try {
             table.putItem(new Item().withPrimaryKey("authToken", token.getToken())
-                    .withNumber( "epoch_date", Instant.now().toEpochMilli()));
+                    .withNumber( "epoch_date", Instant.now().toEpochMilli())
+                    .withString("alias", token.getUser().getAlias()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,17 +110,15 @@ public class AuthTokenDAO {
         HashMap<String, String> nameMap = new HashMap<>();
         nameMap.put("#a", "authToken");
         HashMap<String, Object> valueMap = new HashMap<>();
-        valueMap.put(":authToken", request.getAuthToken());
+        valueMap.put(":authToken", request.getAuthToken().getToken());
 
         QuerySpec querySpec = new QuerySpec()
                 .withKeyConditionExpression("#a = :authToken")
                 .withNameMap(nameMap)
                 .withValueMap(valueMap)
-                .withScanIndexForward(false)
-                .withMaxPageSize(1);
+                .withScanIndexForward(false);
 
         ItemCollection<QueryOutcome> items = null;
-
         try {
             items = table.query(querySpec);
             Iterator<Item> iterator = items.iterator();
@@ -132,7 +131,7 @@ public class AuthTokenDAO {
                 break;
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
             return new LogoutResponse(false, "Couldn't access table");
         }
 
