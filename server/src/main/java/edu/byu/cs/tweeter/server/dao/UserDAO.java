@@ -126,8 +126,9 @@ public class UserDAO {
         GetUserDataResponse getUserDataResponse = getUserFromAlias(getUserDataRequest);
         AuthTokenDAO authTokenDAO = new AuthTokenDAO();
         User user = getUserDataResponse.getUser();
-        authTokenDAO.addToken(new AuthToken(user));
-        return new LoginResponse(user, new AuthToken(user));
+        AuthToken authToken = new AuthToken(user);
+        authTokenDAO.addToken(authToken);
+        return new LoginResponse(user, authToken);
     }
 
     private static String hashPassword(String passwordToHash) {
