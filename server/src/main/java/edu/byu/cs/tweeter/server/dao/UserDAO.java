@@ -115,7 +115,7 @@ public class UserDAO {
                 break;
             }
             if(!validPass) {
-                return new LoginResponse("incorrect password");
+                return new LoginResponse("incorrect password or username");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
