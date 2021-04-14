@@ -28,7 +28,7 @@ public class Integration_LoginTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("Test", "User", "@dummyUserName","https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-        AuthToken token = new AuthToken();
+        AuthToken token = new AuthToken(currentUser);
         String goodLogin = "d";
         String badLogin = "Gregory";
         String password = "dddddddd";

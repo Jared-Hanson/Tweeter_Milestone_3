@@ -26,9 +26,9 @@ public class Integration_TweetTest {
     public void setup() {
         User currentUser = new User("FirstName", "LastName", null);
         LocalDate date1 = LocalDate.of(2021, 1, 8);
-        Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1.toString());
+        Tweet tweet1 = new Tweet(currentUser, "This is a tweet", date1.toEpochDay());
 
-        request = new TweetRequest(currentUser, tweet1.getBody(), date1.toString(), new AuthToken());
+        request = new TweetRequest(currentUser.getAlias(), tweet1.getBody(), date1.toEpochDay(), new AuthToken(currentUser));
 
         expectedResponse = new TweetResponse(true);
 

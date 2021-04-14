@@ -32,7 +32,7 @@ public class RegisterServiceProxyTest {
     public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-        AuthToken token = new AuthToken();
+        AuthToken token = new AuthToken(currentUser);
         String login = "@FirstNameLastName";
         String password = "password";
 

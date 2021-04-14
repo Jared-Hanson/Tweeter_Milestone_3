@@ -25,7 +25,7 @@ public class Integration_RegisterTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("Test", "User", "d","https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-        AuthToken token = new AuthToken();
+        AuthToken token = new AuthToken(currentUser);
         String login = "d";
         String password = "dddddddd";
 

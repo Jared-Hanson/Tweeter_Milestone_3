@@ -25,7 +25,7 @@ public class LogoutPresenterTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
-        AuthToken token = new AuthToken();
+        AuthToken token = new AuthToken(currentUser);
 
         request = new LogoutRequest(currentUser, token);
         response = new LogoutResponse(true, "success");
